@@ -1,0 +1,106 @@
+<div class="menuButtons" 
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
+		xmlns:s="http://jboss.com/products/seam/taglib">
+  <ice:panelGroup id="menuPanelGroup" styleClass="formBorderHighlight">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+	   <td class="iceDatTblColHdr2">
+
+	      <ice:panelGrid id="menuPanelGrid" columns="2" columnClasses="leftMenu,rightMenu">
+
+                <ice:panelGroup id="leftMenuId" >
+
+                    <ice:outputText id="menuProjectNameId" value="#{projectName}:"/>
+                    <s:link id="menuHomeId" view="/home.xhtml" value="Home" propagation="none" action="#{NavigationBean.setPage( 'Home' )}"/>
+
+					<s:link view="/AppstorePlatformList.xhtml" value="Platforms" id="AppstorePlatformId" propagation="none"
+						    rendered="#{identity.loggedIn}" action="#{NavigationBean.setPage( 'Platforms' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+                    <s:link view="/AppstoreAppList.xhtml" value="Applications" id="AppstoreAppId" propagation="none"
+                    		rendered="#{identity.loggedIn}" action="#{NavigationBean.setPage( 'Applications' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+                    <s:link view="/AppstoreCategoryList.xhtml" value="Categories" id="AppstoreCategoryId" propagation="none"
+                    		rendered="#{identity.loggedIn}" action="#{NavigationBean.setPage( 'Categories' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+				    <s:link view="/AppstoreAppTypeList.xhtml" value="Types" id="AppstoreAppTypeId" propagation="none"
+				    		rendered="#{identity.loggedIn and (identity.hasRole( 'admin' ) || identity.hasRole( 'developer' ))}" action="#{NavigationBean.setPage( 'Types' )}">
+				       <f:param name="from"/>
+                    </s:link>
+
+				    <s:link view="/AppstoreCurrencyCodeList.xhtml" value="Currencies" id="AppstoreCurrencyCodeId" propagation="none"
+				    		rendered="#{identity.loggedIn and identity.hasRole( 'admin' )}" action="#{NavigationBean.setPage( 'CurrencyCodes' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+                    <s:link view="/AppstoreUserList.xhtml" value="Users" id="AppstoreUserId" propagation="none"
+                    		rendered="#{identity.loggedIn and identity.hasRole( 'admin' )}" action="#{NavigationBean.setPage( 'Users' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+                    <s:link view="/AppstoreUserRoleList.xhtml" value="Roles" id="AppstoreUserRoleId" propagation="none"
+                    		rendered="#{identity.loggedIn and identity.hasRole( 'admin' )}" action="#{NavigationBean.setPage( 'Roles' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+		  		<ice:panelGroup style="padding-top: 10px; padding-left: 100px;" rendered="#{identity.hasRole( 'admin' )}">
+
+				    <s:link view="/AppstoreUserRoleMapList.xhtml" value="Assign To #{NavigationBean.page eq 'Users' ? 'Role' : 'User'}" id="AppstoreUserRoleMapId" propagation="none"
+				    		rendered="#{NavigationBean.page eq 'Users' || NavigationBean.page eq 'Roles'}"
+				    		action="#{NavigationBean.setPage( NavigationBean.page eq 'Users' ? 'Users' : 'Roles' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+                    <s:link view="/AppstoreUserPlatformMapList.xhtml" value="Assign To #{NavigationBean.page eq 'Users' ? 'Platform' : 'User'}" id="AppstoreUserPlatformMapId" propagation="none"
+                    		rendered="#{NavigationBean.page eq 'Users' || NavigationBean.page eq 'Platforms'}"
+				    		action="#{NavigationBean.setPage( NavigationBean.page eq 'Users' ? 'Users' : 'Platforms' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+				    <s:link view="/AppstoreUserAppMapList.xhtml" value="Assign To #{NavigationBean.page eq 'Users' ? 'Application' : 'User'}" id="AppstoreUserAppMapId" propagation="none"
+				    		rendered="#{NavigationBean.page eq 'Users' || NavigationBean.page eq 'Applications'}"
+				    		action="#{NavigationBean.setPage( NavigationBean.page eq 'Users' ? 'Users' : 'Applications' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+				    <s:link view="/AppstoreAppPlatformMapList.xhtml" value="Assign To #{NavigationBean.page eq 'Applications' ? 'Application' : 'Platform'}" id="AppstoreAppPlatformMapId" propagation="none"
+				            rendered="#{NavigationBean.page eq 'Applications' || NavigationBean.page eq 'Platforms'}"
+				            action="#{NavigationBean.setPage( NavigationBean.page eq 'Applications' ? 'Applications' : 'Platforms' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+                    <s:link view="/AppstoreAppCategoryMapList.xhtml" value="Assign To #{NavigationBean.page eq 'Applications' ? 'Category' : 'Application'}" id="AppstoreAppCategoryMapId" propagation="none"
+                    		rendered="#{NavigationBean.page eq 'Application' || NavigationBean.page eq 'Categories' }"
+                    		action="#{NavigationBean.setPage( NavigationBean.page eq 'Applications' ? 'Applications' : 'Categories' )}">
+                        <f:param name="from"/>
+                    </s:link>
+
+				    <s:link view="/AppstoreCategoryPlatformMapList.xhtml" value="Assign To #{NavigationBean.page eq 'Categories' ? 'Platform' : 'Category'}" id="AppstoreCategoryPlatformMapId" propagation="none"
+				    		rendered="#{NavigationBean.page eq 'Categories' || NavigationBean.page eq 'Platforms'}"
+				    		action="#{NavigationBean.setPage( NavigationBean.page eq 'Categories' ? 'Categories' : 'Platforms' )}">
+                        <f:param name="from"/>
+                    </s:link>
+				</ice:panelGroup>
+                    <!-- @newMenuItem@ -->
+ 		     </ice:panelGroup>
+                 <ice:panelGroup id="rightMenuId">
+                                <h:outputText id="menuWelcomeId" value="signed in as: #{credentials.username}" rendered="#{identity.loggedIn}"/>
+                                <s:link view="/login.xhtml" id="menuLoginId" value="Login" rendered="#{not identity.loggedIn}" propagation="none"/>
+                                <s:link view="/home.xhtml" id="menuLogoutId" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}" propagation="none"/>
+                </ice:panelGroup>
+            </ice:panelGrid>
+         </td>
+      </tr>
+    </table>
+  </ice:panelGroup>
+</div>
+

@@ -1,0 +1,19 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:s="http://jboss.com/products/seam/taglib">
+                 
+    <div id="displayProp" class="prop">
+        <div style="float: left;">
+	        <span id="displayName" class="name">
+	            <ui:insert name="label"/>
+	        </span>
+	    </div>
+	    <div style="padding-left: 85px;">
+	        <span id="displayValue" class="value">
+	            <ui:insert/>
+	        </span>
+	    </div>
+    </div>
+</ui:composition>

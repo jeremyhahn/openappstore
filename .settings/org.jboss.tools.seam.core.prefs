@@ -1,0 +1,16 @@
+#Sun Jun 21 22:46:34 EDT 2009
+action.package=com.makeabyte.appstore.client.session
+action.sources=/appstore/src/hot
+eclipse.preferences.version=1
+model.package=com.makeabyte.appstore.server.entity
+model.sources=/appstore/src/main
+seam.ejb.project=appstore
+seam.project.connection.profile=
+seam.project.deployment.type=ear
+seam.project.settings.version=1.1
+seam.project.web.root.folder=/appstore/view
+seam.runtime.name=jboss-seam-2.1.2.CR2
+seam.test.creating=true
+seam.test.project=appstore
+test.package=com.makeabyte.appstore.test
+test.sources=/appstore/src/test

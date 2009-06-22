@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<page xmlns="http://jboss.com/products/seam/pages"
+
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
+
+      no-conversation-view-id="/AppstoreAppPlatformMapList.xhtml"
+
+      login-required="true">
+
+   
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+   
+   <action execute="#{appstoreAppPlatformMapHome.wire}"/>
+   
+   <param name="appstoreAppPlatformMapFrom"/>
+   <param name="appstoreAppPlatformMapAppId" value="#{appstoreAppPlatformMapHome.appstoreAppPlatformMapId.appId}"/>
+   <param name="appstoreAppPlatformMapPlatformId" value="#{appstoreAppPlatformMapHome.appstoreAppPlatformMapId.platformId}"/>
+   <param name="appstoreAppFrom"/>
+   <param name="appstoreAppId" value="#{appstoreAppHome.appstoreAppId}"/>
+   <param name="appstoreAppTypeFrom"/>
+   <param name="appstoreAppTypeId" value="#{appstoreAppTypeHome.appstoreAppTypeId}"/>
+   <param name="appstorePlatformFrom"/>
+   <param name="appstorePlatformId" value="#{appstorePlatformHome.appstorePlatformId}"/>
+
+
+   <param name="appstoreCurrencyCodeFrom"/>
+   <param name="appstoreCurrencyCodeId" value="#{appstoreCurrencyCodeHome.appstoreCurrencyCodeId}"/>
+
+
+
+
+   <navigation from-action="#{appstoreAppPlatformMapHome.persist}">
+       <rule if-outcome="persisted">
+          <end-conversation/>
+          <redirect view-id="/AppstoreAppPlatformMap.xhtml"/>
+       </rule>
+   </navigation>
+   
+   <navigation from-action="#{appstoreAppPlatformMapHome.update}">
+       <rule if-outcome="updated">
+          <end-conversation/>
+          <redirect view-id="/AppstoreAppPlatformMap.xhtml"/>
+       </rule>
+   </navigation>
+   
+   <navigation from-action="#{appstoreAppPlatformMapHome.remove}">
+       <rule if-outcome="removed">
+          <end-conversation/>
+          <redirect view-id="/AppstoreAppPlatformMapList.xhtml"/>
+       </rule>
+   </navigation>
+   
+</page>

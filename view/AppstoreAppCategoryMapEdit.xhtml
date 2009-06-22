@@ -1,0 +1,157 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ice="http://www.icesoft.com/icefaces/component"
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+  <ice:form id="appstoreAppCategoryMap" styleClass="edit">
+
+     <ice:panelGroup  id="editappstoreAppCategoryMapGroupId" styleClass="formBorderHighlight">
+
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    <ice:outputText id="editTextBoxId" value="#{appstoreAppCategoryMapHome.managed ? 'Edit' : 'Add'} Application to Category Assignment"/>
+                  </td>
+              </tr>
+          </table>
+
+          <ice:panelGroup id="editPanelGroupId" styleClass="edit">		 
+
+            <s:decorate id="appIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Application</ui:define>
+                <ice:selectOneMenu id="acmAppId" value="#{appstoreAppCategoryMapHome.appstoreAppCategoryMapId.appId}" partialSubmit="true"
+                				   valueChangeListener="#{appstoreAppCategoryMapHome.ValueChangeListener}" disabled="#{appstoreAppCategoryMapHome.managed}">
+                   <f:selectItems value="#{appstoreAppList.applications}"/>
+                </ice:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="categoryIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Category</ui:define>
+                <ice:selectOneMenu id="acmCategoryId" value="#{appstoreAppCategoryMapHome.appstoreAppCategoryMapId.categoryId}" partialSubmit="true"
+                				   valueChangeListener="#{appstoreAppCategoryMapHome.ValueChangeListener}" disabled="#{appstoreAppCategoryMapHome.managed}">
+                    <f:selectItems value="#{appstoreCategoryList.categories}"/>
+                </ice:selectOneMenu>
+             </s:decorate>
+          </ice:panelGroup>
+       </ice:panelGroup>
+
+       <div class="actionButtons">
+        
+            <ice:commandButton id="save" value="Save" action="#{appstoreAppCategoryMapHome.persist}"
+                               disabled="#{!appstoreAppCategoryMapHome.wired}" rendered="#{!appstoreAppCategoryMapHome.managed}"/>  
+
+            <!-- <ice:commandButton id="update" value="Save" action="#{appstoreAppCategoryMapHome.update}" rendered="#{appstoreAppCategoryMapHome.managed}"/> -->
+
+            <ice:commandButton id="delete" value="Delete" action="#{appstoreAppCategoryMapHome.remove}" immediate="true" rendered="#{appstoreAppCategoryMapHome.managed}"/>
+
+            <s:button id="cancelEdit" styleClass="iceCmdBtn" value="Cancel" propagation="end" view="/AppstoreAppCategoryMap.xhtml" rendered="#{appstoreAppCategoryMapHome.managed}"/>
+
+            <s:button id="cancelAddappstoreAppCategoryMapHome" styleClass="iceCmdBtn" value="Cancel" propagation="end"
+            		  view="/#{empty appstoreAppCategoryMapFrom ? 'AppstoreAppCategoryMapList' : appstoreAppCategoryMapFrom}.xhtml"
+                	  rendered="#{!appstoreAppCategoryMapHome.managed}"/>
+        </div>
+    </ice:form>
+
+ <ice:form id="form2appstoreAppCategoryMapHome">  
+
+  <ice:panelTabSet id="editPanelTabappstoreAppCategoryMapHomeId" styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
+   
+ 	<ice:panelTab id="editTabappstoreAppId" label="Application Details">
+
+ 		<div class="association" id="appstoreAppParent">
+
+       	<h:outputText id="editappstoreAppTextId" value="No applications associated with this assignment."
+       				  rendered="#{appstoreAppCategoryMapHome.instance.appstoreApp == null}"/>
+
+       	<ice:dataTable var="appstoreApp" value="#{appstoreAppCategoryMapHome.instance.appstoreApp}" 
+       	               rendered="#{appstoreAppCategoryMapHome.instance.appstoreApp != null}"
+       	               rowClasses="rvgRowOne,rvgRowTwo" columnClasses="allCols" id="editappstoreAppTableId">
+
+            <ice:column id="$editColumnappIdId">
+                <f:facet name="header">AppID</f:facet>
+                #{appstoreApp.appId}
+            </ice:column>
+
+			<ice:column id="$editColumnnameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstoreApp.name}
+            </ice:column>
+
+			<ice:column id="$editColumndescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstoreApp.description}
+            </ice:column>
+
+            <ice:column id="$editColumnappstoreAppTypeId">
+	    	    <f:facet name="header">Type</f:facet>
+		    	#{appstoreApp.appstoreAppType.name}
+            </ice:column>
+
+			<ice:column id="$editColumncostId">
+                <f:facet name="header">Cost</f:facet>
+                #{appstoreApp.cost}
+            </ice:column>
+
+            <ice:column id="$editColumnappstoreCurrencyCodeId">
+	    	    <f:facet name="header">Currency Code</f:facet>
+		    	#{appstoreApp.appstoreCurrencyCode.code}
+            </ice:column>
+
+			<ice:column id="viewSourceId">
+                <f:facet name="header">Source</f:facet>
+                <s:link rendered="#{appstoreApp.source != null}" value="Download"/>
+                <ice:outputText value="(unavailable)" style="font-style: italic;" rendered="#{appstoreApp.source == null}"/>
+            </ice:column>
+
+            <ice:column id="editColumnappstoreAppLinkId">
+                <f:facet name="header">Action</f:facet>
+                <s:link view="/AppstoreApp.xhtml" id="viewappstoreApp" value="View" propagation="none">
+                    <f:param name="appstoreAppId" value="#{appstoreApp.id}"/>
+                </s:link>
+            </ice:column>
+      </ice:dataTable>
+    </div>
+    </ice:panelTab>
+
+ 	<ice:panelTab id="editTabappstoreCategoryId" label="Category Details" >
+
+		<div class="association" id="appstoreCategoryParent">
+
+        <h:outputText id="editappstoreCategoryTextId" value="No category associated with this assignment." 
+	                  rendered="#{appstoreAppCategoryMapHome.instance.appstoreCategory == null}"/>
+
+       	<ice:dataTable var="appstoreCategory" value="#{appstoreAppCategoryMapHome.instance.appstoreCategory}"
+       	               rendered="#{appstoreAppCategoryMapHome.instance.appstoreCategory != null}"
+              		   rowClasses="rvgRowOne,rvgRowTwo" clumnClasses="allCols" id="editappstoreCategoryTableId">
+
+            <ice:column id="$editColumnnameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstoreCategory.name}
+            </ice:column>
+
+            <ice:column id="$editColumndescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstoreCategory.description}
+            </ice:column>
+
+            <ice:column id="editColumnappstoreCategoryLinkId">
+                <f:facet name="header">Action</f:facet>
+                <s:link view="/AppstoreCategory.xhtml" id="viewappstoreCategory" value="View" propagation="none">
+                    <f:param name="appstoreCategoryId" value="#{appstoreCategory.id}"/>
+                </s:link>
+            </ice:column>
+      </ice:dataTable>
+     </div>
+    </ice:panelTab>
+   </ice:panelTabSet>
+  </ice:form>
+ </ui:define>
+</ui:composition>

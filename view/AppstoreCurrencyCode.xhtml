@@ -1,0 +1,111 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"   
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+      <ice:panelGroup  id="viewappstoreCurrencyCodeHomePanelGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    	<ice:outputText id="viewTextappstoreCurrencyCodeHomeId" value="Currency Codes"/>
+                  </td>
+              </tr>
+          </table>
+
+        <s:decorate id="code" template="layout/display.xhtml">
+            <ui:define name="label">Code</ui:define>
+            #{appstoreCurrencyCodeHome.instance.code}&#160;
+        </s:decorate>
+
+        <s:decorate id="symbol" template="layout/display.xhtml">
+            <ui:define name="label">Symbol</ui:define>
+            #{appstoreCurrencyCodeHome.instance.symbol}&#160;
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+        <div id="viewAppstoreCurrencyCodeEditsearchButtons" class="actionButtons">      
+
+            <s:button view="/AppstoreCurrencyCodeEdit.xhtml" id="edit" styleClass="iceCmdBtn" value="Edit"/>
+            <s:button view="/#{empty appstoreCurrencyCodeFrom ? 'AppstoreCurrencyCodeList' : appstoreCurrencyCodeFrom}.xhtml"
+                      id="done" styleClass="iceCmdBtn" value="Done"/>
+       </div>
+     </ice:panelGroup>
+
+    <ice:form id="view2appstoreCurrencyCodeHomeFormId">
+
+       <ice:panelTabSet id="viewappstoreCurrencyCodeHomeTabSetId" styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
+
+   <ice:panelTab label="Applications">
+
+    <div class="association" id="viewappstoreAppsChildrenId">
+        
+        <h:outputText value="No applications associated with this currency code." 
+	                  id="viewappstoreAppsChildTextId" rendered="#{empty appstoreCurrencyCodeHome.appstoreApps}"/>
+        
+        <ice:dataTable value="#{appstoreCurrencyCodeHome.appstoreApps}" 
+                       var="appstoreApp" 
+                  	   rendered="#{not empty appstoreCurrencyCodeHome.appstoreApps}" 
+                	   rowClasses="rvgRowOne,rvgRowTwo"
+		    		   columnClasses="allCols"
+                       id="viewappstoreAppsTableId">
+
+            <ice:column id="viewappIdId">
+                <f:facet name="header">AppID</f:facet>
+                <h:outputText id="viewappIdTextId" value="#{appstoreApp.appId}"/>
+            </ice:column>
+
+            <ice:column id="viewnameId">
+                <f:facet name="header">Name</f:facet>
+                <h:outputText id="viewnameTextId" 
+		           value="#{appstoreApp.name}"/>
+            </ice:column>
+
+            <ice:column id="viewdescriptionId">
+                <f:facet name="header">Description</f:facet>
+                <h:outputText id="viewdescriptionTextId" value="#{appstoreApp.description}"/>
+            </ice:column>
+
+            <ice:column id="viewcostId">
+                <f:facet name="header">Cost</f:facet>
+                #{appstoreApp.appstoreCurrencyCode.symbol}
+                <h:outputText id="viewcostTextId" value="#{appstoreApp.cost}"/>
+            </ice:column>
+
+            <ice:column id="viewSourceId">
+	            <f:facet name="header">Source</f:facet>
+	            <ice:outputText value="(unavailable)" style="font-style: italic;" rendered="#{appstoreApp.size eq 0}"/>
+	            <s:link value="Download" action="#{DownloadBean.download}" rendered="#{appstoreApp.size gt 0}">
+			    	<f:param name="applicationId" value="#{appstoreApp.id}" />
+			    </s:link>
+        	</ice:column>
+
+            <ice:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectappstoreAppLinkId" value="Select" view="/AppstoreApp.xhtml">
+                    <f:param name="appstoreAppId" value="#{appstoreApp.id}"/>
+                    <f:param name="appstoreAppFrom" value="AppstoreCurrencyCode"/>
+                </s:link>
+            </ice:column>
+        </ice:dataTable>
+      </div>
+      <div class="actionButtons">
+        <s:button id="viewAddappstoreAppButtonId" value="Add Application" view="/AppstoreAppEdit.xhtml">
+            <f:param name="appstoreCurrencyCodeId" value="#{appstoreCurrencyCodeHome.instance.id}"/>
+            <f:param name="appstoreAppFrom" value="AppstoreCurrencyCode"/>
+        </s:button>
+     </div>        
+    </ice:panelTab>
+   </ice:panelTabSet>
+  </ice:form>
+ </ui:define>
+</ui:composition>

@@ -1,0 +1,141 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <ice:form id="appstoreUserPlatformMapSearch" styleClass="edit">
+      <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+                    <ice:outputText id="listAppstoreUserPlatformMapId" value="User to Platform assignment search filter"/>
+                 </td>
+              </tr>
+         </table>	
+         <ice:panelGroup id="listPanelGroupAppstoreUserPlatformMapId" styleClass="edit">
+
+		    <s:decorate id="upmPlatformIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Platform</ui:define>
+                <ice:selectOneMenu id="upmPlatformId" value="#{appstoreUserPlatformMapList.appstorePlatform.id}" partialSubmit="true" valueChangeListener="#{appstoreUserPlatformMapList.ValueChangeListener}">
+                   <f:selectItems value="#{appstorePlatformList.platforms}"/>
+                </ice:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="upmUserIdField" template="layout/edit.xhtml">
+                <ui:define name="label">User</ui:define>
+                <ice:selectOneMenu id="upmUserId" value="#{appstoreUserPlatformMapList.appstoreUser.id}" partialSubmit="true" valueChangeListener="#{appstoreUserPlatformMapList.ValueChangeListener}">
+                    <f:selectItems value="#{appstoreUserList.users}"/>
+                </ice:selectOneMenu>
+             </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <ice:selectOneRadio id="logic" style="width: 120px" value="#{appstoreUserPlatformMapList.restrictionLogicOperator}" partialSubmit="true">
+                    <f:selectItem itemLabel="Both" itemValue="and"/>
+                    <f:selectItem itemLabel="Either" itemValue="or"/>
+                </ice:selectOneRadio>
+            </s:decorate>
+	     </ice:panelGroup>
+      </ice:panelGroup> 
+    </ice:form>
+
+    <ice:panelGroup styleClass="formBorderHighlight">
+
+    <h3>User to Platform assignment search results</h3>
+
+    <div class="searchResults" id="listappstoreUserPlatformMapResults">
+    <ice:outputText value="The appstoreUserPlatformMap search returned no results." 
+                    rendered="#{empty appstoreUserPlatformMapList.resultList}"/>
+               
+    <ice:dataTable id="appstoreUserPlatformMapList" 
+                   var="appstoreUserPlatformMap"
+                   value="#{appstoreUserPlatformMapList.resultList}" 
+                   resizable="true"
+				   columnClasses="allCols"
+             	   rendered="#{not empty appstoreUserPlatformMapList.resultList}">
+
+        <ice:column id="listplatformIdId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserPlatformMapList}"/>
+                    <ui:param name="propertyLabel" value="Platform"/>
+                    <ui:param name="propertyPath" value="appstoreUserPlatformMap.appstorePlatform.name"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreUserPlatformMap.appstorePlatform.name}
+        </ice:column>
+
+        <ice:column id="listuserIdId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserPlatformMapList}"/>
+                    <ui:param name="propertyLabel" value="User"/>
+                    <ui:param name="propertyPath" value="appstoreUserPlatformMap.appstoreUser.username"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreUserPlatformMap.appstoreUser.username}
+        </ice:column>
+
+        <ice:column id="listColumnAppstoreUserPlatformMapId">
+            <f:facet name="header">Action</f:facet>
+            <s:link id="appstoreUserPlatformMap" view="/#{empty from ? 'AppstoreUserPlatformMap' : from}.xhtml" value="#{empty from ? 'View' : 'Select'}">
+                <f:param name="appstoreUserPlatformMapPlatformId" value="#{appstoreUserPlatformMap.id.platformId}"/>
+                <f:param name="appstoreUserPlatformMapUserId" value="#{appstoreUserPlatformMap.id.userId}"/>
+            </s:link>
+			#{' '}
+            <s:link id="appstoreUserPlatformMapEdit" view="/AppstoreUserPlatformMapEdit.xhtml" value="Edit" rendered="#{empty from}">
+                <f:param name="appstoreUserPlatformMapPlatformId" value="#{appstoreUserPlatformMap.id.platformId}"/>
+                <f:param name="appstoreUserPlatformMapUserId" value="#{appstoreUserPlatformMap.id.userId}"/>
+            </s:link>
+        </ice:column>
+    </ice:dataTable>
+    </div>
+</ice:panelGroup>
+
+    <div class="tableControl">
+
+        <s:link view="/AppstoreUserPlatformMapList.xhtml" 
+            	rendered="#{appstoreUserPlatformMapList.previousExists}" 
+                value="#{messages.left}#{messages.left} First Page"
+                id="firstPageappstoreUserPlatformMapListId">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/AppstoreUserPlatformMapList.xhtml" 
+            	rendered="#{appstoreUserPlatformMapList.previousExists}" 
+                value="#{messages.left} Previous Page"
+                id="previousPageappstoreUserPlatformMapListId">
+            <f:param name="firstResult" value="#{appstoreUserPlatformMapList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/AppstoreUserPlatformMapList.xhtml" 
+                rendered="#{appstoreUserPlatformMapList.nextExists}" 
+                value="Next Page #{messages.right}"
+                id="nextPageappstoreUserPlatformMapListId">
+            <f:param name="firstResult" value="#{appstoreUserPlatformMapList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/AppstoreUserPlatformMapList.xhtml" 
+                rendered="#{appstoreUserPlatformMapList.nextExists}" 
+                value="Last Page #{messages.right}#{messages.right}"
+                id="lastPageappstoreUserPlatformMapListId">
+            <f:param name="firstResult" value="#{appstoreUserPlatformMapList.lastFirstResult}"/>
+        </s:link>
+    </div>
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/AppstoreUserPlatformMapEdit.xhtml" id="create"  value="New Platform Assignment">
+            <f:param name="appstoreUserPlatformMapPlatformId"/>
+            <f:param name="appstoreUserPlatformMapUserId"/>
+        </s:button>
+    </s:div>
+ </ui:define>
+</ui:composition>

@@ -1,0 +1,235 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ice="http://www.icesoft.com/icefaces/component"   
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+      <ice:panelGroup  id="viewappstoreUserHomePanelGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+				    <ice:outputText id="viewTextappstoreUserHomeId" value="User"/>
+                  </td>
+              </tr>
+          </table>
+
+        <s:decorate id="username" template="layout/display.xhtml">
+            <ui:define name="label">Username</ui:define>
+            #{appstoreUserHome.instance.username}&#160;
+        </s:decorate>
+
+        <s:decorate id="password" template="layout/display.xhtml">
+            <ui:define name="label">Password</ui:define>
+            #{appstoreUserHome.instance.password}&#160;
+        </s:decorate>
+
+        <s:decorate id="created" template="layout/display.xhtml">
+            <ui:define name="label">Created</ui:define>
+            <ice:outputText id="viewcreatedTextId" value="#{appstoreUserHome.instance.created}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </ice:outputText>
+        </s:decorate>
+
+        <ice:panelGroup rendered="not empty #{appstoreUserHome.instance.lastLogin}">
+	        <s:decorate id="lastLogin" template="layout/display.xhtml">
+	            <ui:define name="label">Last Login</ui:define>
+	            <ice:outputText id="viewlastLoginTextId" value="#{appstoreUserHome.instance.lastLogin}">
+	                <s:convertDateTime type="both" dateStyle="short"/>
+	            </ice:outputText>
+	        </s:decorate>
+	    </ice:panelGroup>
+
+        <s:decorate id="apiKey" template="layout/display.xhtml">
+            <ui:define name="label">API Key</ui:define>
+            #{appstoreUserHome.instance.apiKey}&#160;
+        </s:decorate>
+
+        <s:decorate id="apiEnabled" template="layout/display.xhtml">
+            <ui:define name="label">API Enabled</ui:define>
+            #{appstoreUserHome.instance.apiEnabled ? 'Enabled' : 'Disabled'}&#160;
+        </s:decorate>
+
+        <div style="clear:both"/>
+ 
+
+    <div id="viewAppstoreUserEditsearchButtons" class="actionButtons">      
+        <s:button view="/AppstoreUserEdit.xhtml" id="edit" styleClass="iceCmdBtn" value="Edit"/>
+        <s:button view="/#{empty appstoreUserFrom ? 'AppstoreUserList' : appstoreUserFrom}.xhtml"
+                  id="done" styleClass="iceCmdBtn" value="Done"/>
+    </div>
+  </ice:panelGroup>
+
+   <ice:form id="view2appstoreUserHomeFormId">
+
+       <ice:panelTabSet id="viewappstoreUserHomeTabSetId" styleClass="componentPanelTabSetLayout" sytle="margin-bottom:5px;margin-top:10px;">
+
+    	 <ice:panelTab label="Applications">
+
+    		<div class="association" id="viewappstoreUserAppMapsChildrenId">
+
+        <h:outputText value="No applications associated with this user." 
+	                  id="viewappstoreUserAppMapsChildTextId"
+                      rendered="#{empty appstoreUserHome.appstoreUserAppMaps}"/>
+
+        <ice:dataTable value="#{appstoreUserHome.appstoreUserAppMaps}" 
+                       var="appstoreUserAppMap" 
+	                   rendered="#{not empty appstoreUserHome.appstoreUserAppMaps}" 
+     	               rowClasses="rvgRowOne,rvgRowTwo"
+		    		   columnClasses="allCols"
+                       id="viewappstoreUserAppMapsTableId">
+
+            <ice:column id="viewappIdId">
+                <f:facet name="header">AppID</f:facet>
+                #{appstoreUserAppMap.appstoreApp.appId}
+            </ice:column>
+            
+            <ice:column id="viewAppNameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstoreUserAppMap.appstoreApp.name}
+            </ice:column>
+
+            <ice:column id="viewAppDescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstoreUserAppMap.appstoreApp.description}
+            </ice:column>
+
+            <ice:column id="viewCostId">
+                #{appstoreUserAppMap.appstoreApp.appstoreCurrencyCode.symbol}
+                <f:facet name="header">Cost</f:facet>
+                #{appstoreUserAppMap.appstoreApp.cost}
+            </ice:column>
+
+            <ice:column id="viewCostId">
+                <f:facet name="header">Currency Code</f:facet>
+                #{appstoreUserAppMap.appstoreApp.appstoreCurrencyCode.code}
+            </ice:column>
+
+            <ice:column id="viewSourceId">
+	            <f:facet name="header">Source</f:facet>
+	            <ice:outputText value="(unavailable)" style="font-style: italic;" rendered="#{appstoreUserAppMap.appstoreApp.size eq 0}"/>
+	            <s:link value="Download" action="#{DownloadBean.download}" rendered="#{appstoreUserAppMap.appstoreApp.size gt 0}">
+			    	<f:param name="applicationId" value="#{appstoreUserAppMap.appstoreApp.id}" />
+			    </s:link>
+        	</ice:column>
+
+            <ice:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectappstoreUserAppMapLinkId" value="Select" view="/AppstoreUserAppMap.xhtml">
+                    <f:param name="appstoreUserAppMapAppId" value="#{appstoreUserAppMap.id.appId}"/>
+                    <f:param name="appstoreUserAppMapUserId" value="#{appstoreUserAppMap.id.userId}"/>
+                    <f:param name="appstoreUserAppMapFrom" value="AppstoreUser"/>
+                </s:link>
+            </ice:column>
+
+        </ice:dataTable>
+        
+     </div>
+    
+    <div class="actionButtons">
+        <s:button id="viewAddappstoreUserAppMapButtonId" value="Add Application" view="/AppstoreUserAppMapEdit.xhtml">
+            <f:param name="appstoreUserId" value="#{appstoreUserHome.instance.id}"/>
+            <f:param name="appstoreUserAppMapFrom" value="AppstoreUser"/>
+        </s:button>
+    </div>        
+   </ice:panelTab>
+
+   <ice:panelTab label="Platforms">
+    
+    <div class="association" id="viewappstoreUserPlatformMapsChildrenId">
+        
+        <h:outputText value="No platforms associated with this user." 
+	                  id="viewappstoreUserPlatformMapsChildTextId"
+                      rendered="#{empty appstoreUserHome.appstoreUserPlatformMaps}"/>
+        
+        <ice:dataTable value="#{appstoreUserHome.appstoreUserPlatformMaps}" 
+                       var="appstoreUserPlatformMap" 
+                       rendered="#{not empty appstoreUserHome.appstoreUserPlatformMaps}" 
+                       rowClasses="rvgRowOne,rvgRowTwo"
+		     		   columnClasses="allCols"
+                       id="viewappstoreUserPlatformMapsTableId">
+
+            <ice:column id="viewPlatformNameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstoreUserPlatformMap.appstorePlatform.name}
+            </ice:column>
+
+            <ice:column id="viewPlatformDescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstoreUserPlatformMap.appstorePlatform.description}
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectappstoreUserPlatformMapLinkId" value="Select" view="/AppstoreUserPlatformMap.xhtml">
+                    <f:param name="appstoreUserPlatformMapPlatformId" value="#{appstoreUserPlatformMap.id.platformId}"/>
+                    <f:param name="appstoreUserPlatformMapUserId" value="#{appstoreUserPlatformMap.id.userId}"/>
+                    <f:param name="appstoreUserPlatformMapFrom" value="AppstoreUser"/>
+                </s:link>
+            </ice:column>
+        </ice:dataTable>
+        
+     </div>
+    
+    <div class="actionButtons">
+        <s:button id="viewAddappstoreUserPlatformMapButtonId" value="Add Platform" view="/AppstoreUserPlatformMapEdit.xhtml">
+            <f:param name="appstoreUserId" value="#{appstoreUserHome.instance.id}"/>
+            <f:param name="appstoreUserPlatformMapFrom" value="AppstoreUser"/>
+        </s:button>
+    </div>
+   </ice:panelTab>
+
+   <ice:panelTab label="Roles">
+    
+    <div class="association" id="viewappstoreUserRoleMapsChildrenId">
+
+        <h:outputText value="No roles associated with this user."
+	                  id="viewappstoreUserRoleMapsChildTextId"
+                      rendered="#{empty appstoreUserHome.appstoreUserRoleMaps}"/>
+
+        <ice:dataTable value="#{appstoreUserHome.appstoreUserRoleMaps}" 
+                       var="appstoreUserRoleMap" 
+                  	   rendered="#{not empty appstoreUserHome.appstoreUserRoleMaps}" 
+                	   rowClasses="rvgRowOne,rvgRowTwo"
+		    		   columnClasses="allCols"
+                       id="viewappstoreUserRoleMapsTableId">
+
+            <ice:column id="viewRoleNameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstoreUserRoleMap.appstoreUserRole.name}
+            </ice:column>
+
+            <ice:column id="viewRoleDescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstoreUserRoleMap.appstoreUserRole.description}
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectappstoreUserRoleMapLinkId" value="Select"	view="/AppstoreUserRoleMap.xhtml">
+                    <f:param name="appstoreUserRoleMapRoleId" value="#{appstoreUserRoleMap.id.roleId}"/>
+                    <f:param name="appstoreUserRoleMapUserId" value="#{appstoreUserRoleMap.id.userId}"/>
+                    <f:param name="appstoreUserRoleMapFrom" value="AppstoreUser"/>
+                </s:link>
+            </ice:column>
+        </ice:dataTable>
+      </div>
+
+      <div class="actionButtons">
+        <s:button id="viewAddappstoreUserRoleMapButtonId" value="Add Role" view="/AppstoreUserRoleMapEdit.xhtml">
+            <f:param name="appstoreUserId" value="#{appstoreUserHome.instance.id}"/>
+            <f:param name="appstoreUserRoleMapFrom" value="AppstoreUser"/>
+        </s:button>
+     </div>        
+    </ice:panelTab>
+   </ice:panelTabSet>
+  </ice:form>
+ </ui:define>
+</ui:composition>

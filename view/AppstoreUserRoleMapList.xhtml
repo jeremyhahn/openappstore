@@ -1,0 +1,155 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <ice:form id="appstoreUserRoleMapSearch" styleClass="edit">
+      <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+                    <ice:outputText id="listAppstoreUserRoleMapId" value="User to Role assignment search filter"/>
+                 </td>
+              </tr>
+         </table>	
+         <ice:panelGroup id="listPanelGroupAppstoreUserRoleMapId" styleClass="edit">
+		
+		    <s:decorate id="urmRoleIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Role</ui:define>
+                <ice:selectOneMenu id="urmRoleId" value="#{appstoreUserRoleMapList.appstoreUserRole.id}" partialSubmit="true" valueChangeListener="#{appstoreUserRoleMapList.ValueChangeListener}">
+                   <f:selectItems value="#{appstoreUserRoleList.roles}"/>
+                </ice:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="urmUserIdField" template="layout/edit.xhtml">
+                <ui:define name="label">User</ui:define>
+                <ice:selectOneMenu id="urmUserId" value="#{appstoreUserRoleMapList.appstoreUser.id}" partialSubmit="true" valueChangeListener="#{appstoreUserRoleMapList.ValueChangeListener}">
+                    <f:selectItems value="#{appstoreUserList.users}"/>
+                </ice:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <ice:selectOneRadio id="logic" style="width: 120px;" value="#{appstoreUserRoleMapList.restrictionLogicOperator}" partialSubmit="true">
+					<f:selectItem itemLabel="Both" itemValue="and"/>
+                    <f:selectItem itemLabel="Either" itemValue="or"/>
+                </ice:selectOneRadio>
+            </s:decorate>
+	    </ice:panelGroup>
+      </ice:panelGroup> 
+    </ice:form>
+    
+    <ice:panelGroup styleClass="formBorderHighlight">
+
+    <h3>User to Role assignment search results</h3>
+
+    <div class="searchResults" id="listappstoreUserRoleMapResults">
+
+    <ice:outputText value="The role assignment search returned no results." 
+                    rendered="#{empty appstoreUserRoleMapList.resultList}"/>
+
+    <ice:dataTable id="appstoreUserRoleMapList" 
+                   var="appstoreUserRoleMap"
+                   value="#{appstoreUserRoleMapList.resultList}" 
+                   resizable="true"
+				   columnClasses="allCols"
+             	   rendered="#{not empty appstoreUserRoleMapList.resultList}">
+
+        <ice:column id="listUsername">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserRoleMapList}"/>
+                    <ui:param name="propertyLabel" value="Username"/>
+                    <ui:param name="propertyPath" value="appstoreUserRoleMap.id.userId"/>
+                </ui:include>
+            </f:facet>
+        #{appstoreUserRoleMap.appstoreUser.username}
+        </ice:column>
+        
+        <ice:column id="listRoleId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserRoleMapList}"/>
+                    <ui:param name="propertyLabel" value="Role"/>
+                    <ui:param name="propertyPath" value="appstoreUserRoleMap.id.roleId"/>
+                </ui:include>
+            </f:facet>
+        #{appstoreUserRoleMap.appstoreUserRole.name}
+        </ice:column>
+
+        <ice:column id="listDescriptionId">
+            <f:facet name="header">Role Description</f:facet>
+            <ice:outputText id="description" value="#{appstoreUserRoleMap.appstoreUserRole.description}"/>
+	    </ice:column>
+
+        <ice:column id="listColumnAppstoreUserRoleMapId">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'AppstoreUserRoleMap' : from}.xhtml" 
+                    value="#{empty from ? 'View' : 'Select'}" 
+                    id="appstoreUserRoleMap">
+                <f:param name="appstoreUserRoleMapRoleId" value="#{appstoreUserRoleMap.id.roleId}"/>
+                <f:param name="appstoreUserRoleMapUserId" value="#{appstoreUserRoleMap.id.userId}"/>
+            </s:link>
+			#{' '}
+            <s:link view="/AppstoreUserRoleMapEdit.xhtml" value="Edit" id="appstoreUserRoleMapEdit" rendered="#{empty from}">
+                <f:param name="appstoreUserRoleMapRoleId" value="#{appstoreUserRoleMap.id.roleId}"/>
+                <f:param name="appstoreUserRoleMapUserId" value="#{appstoreUserRoleMap.id.userId}"/>
+            </s:link>
+        </ice:column>
+    </ice:dataTable>
+
+    </div>
+</ice:panelGroup>
+
+    <div class="tableControl">
+      
+        <s:link view="/AppstoreUserRoleMapList.xhtml" 
+            rendered="#{appstoreUserRoleMapList.previousExists}" 
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPageappstoreUserRoleMapListId">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+        
+        <s:link view="/AppstoreUserRoleMapList.xhtml" 
+            rendered="#{appstoreUserRoleMapList.previousExists}" 
+               value="#{messages.left} Previous Page"
+                  id="previousPageappstoreUserRoleMapListId">
+            <f:param name="firstResult" 
+                    value="#{appstoreUserRoleMapList.previousFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/AppstoreUserRoleMapList.xhtml" 
+            rendered="#{appstoreUserRoleMapList.nextExists}" 
+               value="Next Page #{messages.right}"
+                  id="nextPageappstoreUserRoleMapListId">
+            <f:param name="firstResult" 
+                    value="#{appstoreUserRoleMapList.nextFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/AppstoreUserRoleMapList.xhtml" 
+            rendered="#{appstoreUserRoleMapList.nextExists}" 
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPageappstoreUserRoleMapListId">
+            <f:param name="firstResult" 
+                    value="#{appstoreUserRoleMapList.lastFirstResult}"/>
+        </s:link>
+        
+    </div>
+    
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/AppstoreUserRoleMapEdit.xhtml" id="create" value="New Role Assignment">
+            <f:param name="appstoreUserRoleMapRoleId"/>
+            <f:param name="appstoreUserRoleMapUserId"/>
+        </s:button>
+    </s:div>
+ </ui:define>
+</ui:composition>

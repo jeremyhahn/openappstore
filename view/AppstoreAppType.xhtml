@@ -1,0 +1,154 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"   
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+      <ice:panelGroup  id="viewappstoreAppTypeHomePanelGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    <ice:outputText id="viewTextappstoreAppTypeHomeId" value="Application Type"/>
+                  </td>
+              </tr>
+          </table>
+
+        <s:decorate id="name" template="layout/display.xhtml">
+            <ui:define name="label">Name</ui:define>
+            #{appstoreAppTypeHome.instance.name}&#160;
+        </s:decorate>
+
+        <s:decorate id="description" template="layout/display.xhtml">
+            <ui:define name="label">Description</ui:define>
+            #{appstoreAppTypeHome.instance.description}&#160;
+        </s:decorate>
+
+        <div style="clear:both"/>
+ 
+
+    <div id="viewAppstoreAppTypeEditsearchButtons" class="actionButtons">      
+
+        <s:button view="/AppstoreAppTypeEdit.xhtml" id="edit" styleClass="iceCmdBtn"
+                  value="Edit" rendered="#{identity.hasRole( 'admin' )}"/>
+
+        <s:button view="/#{empty appstoreAppTypeFrom ? 'AppstoreAppTypeList' : appstoreAppTypeFrom}.xhtml"
+                  id="done" styleClass="iceCmdBtn" value="Done"/>
+
+    </div>
+  </ice:panelGroup>
+
+
+    <ice:form id="view2appstoreAppTypeHomeFormId">
+       <ice:panelTabSet id="viewappstoreAppTypeHomeTabSetId" styleClass="componentPanelTabSetLayout"
+                        style="margin-bottom:5px;margin-top:10px;">
+
+   <ice:panelTab label="Applications">
+    <div class="association" id="viewappstoreAppsChildrenId">
+        
+        <h:outputText value="No applications associated with this application type." 
+	                  id="viewappstoreAppsChildTextId"
+                      rendered="#{empty appstoreAppTypeHome.appstoreApps}"/>
+
+        <ice:dataTable value="#{appstoreAppTypeHome.appstoreApps}" 
+                       var="appstoreApp" 
+                       rendered="#{not empty appstoreAppTypeHome.appstoreApps}" 
+                	   rowClasses="rvgRowOne,rvgRowTwo"
+		    		   columnClasses="allCols"
+                       id="viewappstoreAppsTableId">
+
+            <ice:column id="viewappIdId">
+                <f:facet name="header">AppID</f:facet>
+                <h:outputText id="viewappIdTextId" 
+		           value="#{appstoreApp.appId}"/>
+            </ice:column>
+
+            <ice:column id="viewnameId">
+                <f:facet name="header">Name</f:facet>
+                <h:outputText id="viewnameTextId" 
+		           value="#{appstoreApp.name}"/>
+            </ice:column>
+
+            <ice:column id="viewdescriptionId">
+                <f:facet name="header">Description</f:facet>
+                <h:outputText id="viewdescriptionTextId" 
+		           value="#{appstoreApp.description}"/>
+            </ice:column>
+
+            <ice:column id="viewcostId">
+                <f:facet name="header">Cost</f:facet>
+                #{appstoreApp.appstoreCurrencyCode.symbol}
+                <h:outputText id="viewcostTextId" value="#{appstoreApp.cost}"/>
+            </ice:column>
+            
+            <ice:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectappstoreAppLinkId" 
+                     value="Select" 
+                      view="/AppstoreApp.xhtml">
+                    <f:param name="appstoreAppId" 
+                            value="#{appstoreApp.id}"/>
+                    <f:param name="appstoreAppFrom" value="AppstoreAppType"/>
+                </s:link>
+            </ice:column>
+        </ice:dataTable>
+        
+     </div>
+    
+    <div class="actionButtons">
+        <s:button id="viewAddappstoreAppButtonId" value="Add Application"
+                  view="/AppstoreAppEdit.xhtml" rendered="#{identity.hasRole( 'admin' ) || identity.hasRole( 'developer' )}">
+            <f:param name="appstoreAppTypeId" value="#{appstoreAppTypeHome.instance.id}"/>
+            <f:param name="appstoreAppFrom" value="AppstoreAppType"/>
+        </s:button>
+    </div>        
+   </ice:panelTab>
+
+	<ice:panelTab id="viewappstorePlatformpanelTab" label="Platforms">
+   		
+   		<div class="association" id="appstorePlatformParent">
+        
+       		 <h:outputText value="No platform associated with this application type." 
+		                   id="viewappstorePlatformTextId"
+                   		   rendered="#{appstoreAppTypeHome.instance.appstorePlatform == null}"/>
+   
+        	<ice:dataTable  var="appstorePlatform" 
+                   			value="#{appstoreAppTypeHome.instance.appstorePlatform}" 
+                			rendered="#{appstoreAppTypeHome.instance.appstorePlatform != null}"
+              				rowClasses="rvgRowOne,rvgRowTwo"
+	        				columnClasses="allCols"
+                      		id="viewappstorePlatformTableId">
+
+            <ice:column id="viewnameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstorePlatform.name}
+            </ice:column>
+
+            <ice:column id="viewdescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstorePlatform.description}
+            </ice:column>
+
+            <ice:column id="viewappstorePlatformColumnId">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewappstorePlatformLinkId" value="View" view="/AppstorePlatform.xhtml">
+                    <f:param name="appstorePlatformId" value="#{appstorePlatform.id}"/>
+                </s:link>
+            </ice:column>
+       </ice:dataTable>
+       
+    </div>
+    </ice:panelTab>
+</ice:panelTabSet>
+</ice:form>
+</ui:define>
+
+</ui:composition>
+

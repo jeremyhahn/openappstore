@@ -1,0 +1,173 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component" 
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <ice:form id="appstoreCategory" styleClass="edit">
+     <ice:panelGroup  id="editappstoreCategoryGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    	<ice:outputText id="editTextBoxId" value="#{appstoreCategoryHome.managed ? 'Edit' : 'Add'} Category"/>
+                  </td>
+              </tr>
+          </table>
+
+        <ice:panelGroup id="editPanelGroupId" styleClass="edit">		 
+
+             <s:decorate id="nameField" template="layout/edit.xhtml">
+                <ui:define name="label">Name</ui:define>
+                <ice:inputText id="name" required="true" value="#{appstoreCategoryHome.instance.name}"/>
+            </s:decorate>
+
+            <s:decorate id="descriptionField" template="layout/edit.xhtml">
+                <ui:define name="label">Description</ui:define>
+                <ice:inputTextarea id="description" cols="18" rows="5" value="#{appstoreCategoryHome.instance.description}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span> required fields
+            </div>
+          </ice:panelGroup>
+       </ice:panelGroup>
+                  
+       <div class="actionButtons">
+        
+            <ice:commandButton id="save" 
+                               value="Save" 
+                               action="#{appstoreCategoryHome.persist}"
+                               disabled="#{!appstoreCategoryHome.wired}"
+                               rendered="#{!appstoreCategoryHome.managed}"/>  
+
+            <ice:commandButton id="update" value="Save" 
+                               action="#{appstoreCategoryHome.update}"
+                               rendered="#{appstoreCategoryHome.managed}"/>
+
+            <ice:commandButton id="delete" value="Delete" action="#{appstoreCategoryHome.remove}"
+                               immediate="true" rendered="#{appstoreCategoryHome.managed}"/>
+
+            <s:button id="cancelEdit" styleClass="iceCmdBtn" value="Cancel"
+                      propagation="end" view="/AppstoreCategory.xhtml"
+                      rendered="#{appstoreCategoryHome.managed}"/>
+
+            <s:button id="cancelAddappstoreCategoryHome" styleClass="iceCmdBtn"
+                      value="Cancel" propagation="end"
+                      view="/#{empty appstoreCategoryFrom ? 'AppstoreCategoryList' : appstoreCategoryFrom}.xhtml"
+                      rendered="#{!appstoreCategoryHome.managed}"/>
+        </div>
+
+    </ice:form>
+
+ <ice:form id="form2appstoreCategoryHome">  
+
+   <ice:panelTabSet id="editPanelTabappstoreCategoryHomeId" styleClass="componentPanelTabSetLayout"
+                    style="margin-bottom:5px;margin-top:10px;">
+
+   	 <ice:panelTab id="editPanelTabappstoreAppCategoryMapsId" label="Applications">
+
+        <div class="association" id="appstoreAppCategoryMapsChildren">
+
+            <h:outputText value="No applications associated with this category." 
+	                      id="editappstoreAppCategoryMapsTextId"
+                          rendered="#{empty appstoreCategoryHome.appstoreAppCategoryMaps}"/>
+
+           <ice:dataTable value="#{appstoreCategoryHome.appstoreAppCategoryMaps}" 
+                          var="appstoreAppCategoryMap" 
+                          rendered="#{not empty appstoreCategoryHome.appstoreAppCategoryMaps}" 
+                          rowClasses="rvgRowOne,rvgRowTwo"
+			              columnClasses="allCols"
+                          id="editappstoreAppCategoryMapsTable">
+
+               <ice:column id="viewCategoryNameId">
+	               <f:facet name="header">Name</f:facet>
+	               #{appstoreAppCategoryMap.appstoreCategory.name}
+	           </ice:column>
+
+	           <ice:column id="viewEditCategoryDescriptionId">
+	               <f:facet name="header">Description</f:facet>
+	               #{appstoreAppCategoryMap.appstoreCategory.description}
+	           </ice:column>
+
+               <ice:column id="editappstoreAppCategoryMapId">
+                    <f:facet name="header">Action</f:facet>
+                    <s:link view="/AppstoreAppCategoryMap.xhtml" 
+                            id="selectappstoreAppCategoryMap" 
+                            value="Select"
+                     		propagation="none">
+                        <f:param name="appstoreAppCategoryMapAppId" value="#{appstoreAppCategoryMap.id.appId}"/>
+                        <f:param name="appstoreAppCategoryMapCategoryId" value="#{appstoreAppCategoryMap.id.categoryId}"/>
+                        <f:param name="appstoreAppCategoryMapFrom" value="AppstoreCategory"/>
+                    </s:link>
+                </ice:column>
+           </ice:dataTable>
+      </div>
+        <f:subview rendered="#{appstoreCategoryHome.managed}" id="appstoreAppCategoryMapsId">
+        <div class="actionButtons">
+            <s:button id="addappstoreAppCategoryMapId" 
+                      value="Add Application"
+                      view="/AppstoreAppCategoryMapEdit.xhtml"
+                	  propagation="none">
+                 <f:param name="appstoreCategoryId" value="#{appstoreCategoryHome.instance.id}"/>
+                 <f:param name="appstoreAppCategoryMapFrom" value="AppstoreCategory"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </ice:panelTab>
+ 	<ice:panelTab id="editPanelTabappstoreCategoryPlatformMapsId" label="Platforms">
+        <div class="association" id="appstoreCategoryPlatformMapsChildren">
+
+           <h:outputText value="No platforms associated with this category." 
+	                     id="editappstoreCategoryPlatformMapsTextId"
+                         rendered="#{empty appstoreCategoryHome.appstoreCategoryPlatformMaps}"/>
+
+           <ice:dataTable value="#{appstoreCategoryHome.appstoreCategoryPlatformMaps}" 
+                          var="appstoreCategoryPlatformMap" 
+                          rendered="#{not empty appstoreCategoryHome.appstoreCategoryPlatformMaps}" 
+                          rowClasses="rvgRowOne,rvgRowTwo"
+			  			  columnClasses="allCols"
+                          id="editappstoreCategoryPlatformMapsTable">
+
+               <ice:column id="viewEditPlatformNameId">
+	               <f:facet name="header">Name</f:facet>
+	               #{appstoreCategoryPlatformMap.appstorePlatform.name}
+	           </ice:column>
+
+	           <ice:column id="viewEditPlatformDescriptionId">
+	               <f:facet name="header">Description</f:facet>
+	               #{appstoreCategoryPlatformMap.appstorePlatform.description}
+	           </ice:column>
+
+               <ice:column id="editappstoreCategoryPlatformMapId">
+                    <f:facet name="header">Action</f:facet>
+                    <s:link view="/AppstoreCategoryPlatformMap.xhtml" id="selectappstoreCategoryPlatformMap" value="Select" propagation="none">
+                        <f:param name="appstoreCategoryPlatformMapCategoryId" value="#{appstoreCategoryPlatformMap.id.categoryId}"/>
+                        <f:param name="appstoreCategoryPlatformMapPlatformId" value="#{appstoreCategoryPlatformMap.id.platformId}"/>
+                        <f:param name="appstoreCategoryPlatformMapFrom" value="AppstoreCategory"/>
+                    </s:link>
+                </ice:column>
+           </ice:dataTable>
+      </div>
+        <f:subview rendered="#{appstoreCategoryHome.managed}" id="appstoreCategoryPlatformMapsId">
+        <div class="actionButtons">
+            <s:button id="addappstoreCategoryPlatformMapId" 
+                      value="Add Platform"
+                      view="/AppstoreCategoryPlatformMapEdit.xhtml"
+                      propagation="none">
+                 <f:param name="appstoreCategoryId" value="#{appstoreCategoryHome.instance.id}"/>
+                 <f:param name="appstoreCategoryPlatformMapFrom" value="AppstoreCategory"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </ice:panelTab>
+   </ice:panelTabSet>
+  </ice:form>
+ </ui:define>
+</ui:composition>

@@ -1,0 +1,17 @@
+antlr-runtime.jar
+backport-util-concurrent.jar
+commons-digester.jar
+commons-fileupload.jar
+core.jar
+drools-compiler.jar
+drools-core.jar
+groovy-all.jar
+icefaces.jar
+icefaces-comps.jar
+icefaces-facelets.jar
+janino.jar
+jboss-el.jar
+jboss-seam-remoting.jar
+jbpm-jpdl.jar
+mvel14.jar
+mysql-connector-java-5.1.7-bin.jar

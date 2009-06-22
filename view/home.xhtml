@@ -1,0 +1,32 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                template="layout/template.xhtml">
+
+<ui:define name="body">
+
+        <ice:panelGrid id="homePanelGrid" columns="2" columnClasses="leftMenu,leftMenu">
+             <img src="img/appstore_logo.png" alt="Icefaces and Seam: framework demo"/>   
+             <ice:panelGroup id="homePanelGroup">
+                    <p style="font-style: bold; font-size: 18px;">Welcome to the OpenAppstore!</p>
+                    <p>Features:</p>
+                        <ul>
+                            <li>Manage platforms, apps, app types, categories, currency codes, users and roles.</li>
+                            <li>Create your own Platform as a Service (PaaS) model</li>
+                            <li>SOAP web service used to integrate OpenAppStore into new or existing applications</li>
+							<li>Internationalization support</li>
+                            <li>Templated Facelets views</li>
+                            <li>Default CSS stylesheet</li>
+                            <li>Freedom to customize, distribute, or otherwise use this software with no warranties</li>
+                            <li><a href="http://www.makeabyte.com" target="_blank">Commercial support available</a></li>
+                        </ul>
+            </ice:panelGroup>
+        </ice:panelGrid>
+	</ui:define> 
+</ui:composition>

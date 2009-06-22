@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<page xmlns="http://jboss.com/products/seam/pages"
+
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd">
+
+      
+
+
+   <param name="appstoreCategoryPlatformMapFrom"/>
+   <param name="appstoreCategoryPlatformMapCategoryId" value="#{appstoreCategoryPlatformMapHome.appstoreCategoryPlatformMapId.categoryId}"/>
+   <param name="appstoreCategoryPlatformMapPlatformId" value="#{appstoreCategoryPlatformMapHome.appstoreCategoryPlatformMapId.platformId}"/>
+   <param name="appstoreCategoryFrom"/>
+   <param name="appstoreCategoryId" value="#{appstoreCategoryHome.appstoreCategoryId}"/>
+
+   <param name="appstorePlatformFrom"/>
+   <param name="appstorePlatformId" value="#{appstorePlatformHome.appstorePlatformId}"/>
+
+
+</page>

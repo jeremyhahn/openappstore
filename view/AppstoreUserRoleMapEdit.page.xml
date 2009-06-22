@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
+      no-conversation-view-id="/AppstoreUserRoleMapList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+   
+   <action execute="#{appstoreUserRoleMapHome.wire}"/>
+
+   <param name="appstoreUserRoleMapFrom"/>
+   <param name="appstoreUserRoleMapRoleId" value="#{appstoreUserRoleMapHome.appstoreUserRoleMapId.roleId}"/>
+   <param name="appstoreUserRoleMapUserId" value="#{appstoreUserRoleMapHome.appstoreUserRoleMapId.userId}"/>
+   <param name="appstoreUserFrom"/>
+   <param name="appstoreUserId" value="#{appstoreUserHome.appstoreUserId}"/>
+
+   <param name="appstoreUserRoleFrom"/>
+   <param name="appstoreUserRoleId" value="#{appstoreUserRoleHome.appstoreUserRoleId}"/>
+
+   <navigation from-action="#{appstoreUserRoleMapHome.persist}">
+       <rule if-outcome="persisted">
+          <end-conversation/>
+          <redirect view-id="/AppstoreUserRoleMap.xhtml"/>
+       </rule>
+   </navigation>
+   
+   <navigation from-action="#{appstoreUserRoleMapHome.update}">
+       <rule if-outcome="updated">
+          <end-conversation/>
+          <redirect view-id="/AppstoreUserRoleMap.xhtml"/>
+       </rule>
+   </navigation>
+
+   <navigation from-action="#{appstoreUserRoleMapHome.remove}">
+       <rule if-outcome="removed">
+          <end-conversation/>
+          <redirect view-id="/AppstoreUserRoleMapList.xhtml"/>
+       </rule>
+   </navigation>
+</page>

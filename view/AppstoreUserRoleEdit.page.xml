@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<page xmlns="http://jboss.com/products/seam/pages"
+
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
+
+      no-conversation-view-id="/AppstoreUserRoleList.xhtml"
+
+      login-required="true">
+
+   
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+   
+   <action execute="#{appstoreUserRoleHome.wire}"/>
+   
+   <param name="appstoreUserRoleFrom"/>
+   <param name="appstoreUserRoleId" value="#{appstoreUserRoleHome.appstoreUserRoleId}"/>
+
+
+   <navigation from-action="#{appstoreUserRoleHome.persist}">
+       <rule if-outcome="persisted">
+          <end-conversation/>
+          <redirect view-id="/AppstoreUserRole.xhtml"/>
+       </rule>
+   </navigation>
+   
+   <navigation from-action="#{appstoreUserRoleHome.update}">
+       <rule if-outcome="updated">
+          <end-conversation/>
+          <redirect view-id="/AppstoreUserRole.xhtml"/>
+       </rule>
+   </navigation>
+   
+   <navigation from-action="#{appstoreUserRoleHome.remove}">
+       <rule if-outcome="removed">
+          <end-conversation/>
+          <redirect view-id="/AppstoreUserRoleList.xhtml"/>
+       </rule>
+   </navigation>
+   
+</page>

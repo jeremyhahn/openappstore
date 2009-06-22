@@ -1,0 +1,129 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component" 
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <ice:form id="appstoreCategoryPlatformMap" styleClass="edit">
+     <ice:panelGroup  id="editappstoreCategoryPlatformMapGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    <ice:outputText id="editTextBoxId" value="#{appstoreCategoryPlatformMapHome.managed ? 'Edit' : 'Add'} appstoreCategoryPlatformMap"/>
+                  </td>
+              </tr>
+          </table>
+
+        <ice:panelGroup id="editPanelGroupId" styleClass="edit">		 
+
+            <s:decorate id="categoryIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Category</ui:define>
+                <ice:selectOneMenu id="cpmCategoryId" value="#{appstoreCategoryPlatformMapHome.appstoreCategoryPlatformMapId.categoryId}" partialSubmit="true"
+                				   valueChangeListener="#{appstoreCategoryPlatformMapHome.ValueChangeListener}" disabled="#{appstoreCategoryPlatformMapHome.managed}">
+                   <f:selectItems value="#{appstoreCategoryList.categories}"/>
+                </ice:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="platformIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Platform</ui:define>
+                <ice:selectOneMenu id="cpmPlatformId" value="#{appstoreCategoryPlatformMapHome.appstoreCategoryPlatformMapId.platformId}" partialSubmit="true"
+                				   valueChangeListener="#{appstoreCategoryPlatformMapHome.ValueChangeListener}" disabled="#{appstoreCategoryPlatformMapHome.managed}">
+                    <f:selectItems value="#{appstorePlatformList.platforms}"/>
+                </ice:selectOneMenu>
+            </s:decorate>
+          </ice:panelGroup>
+       </ice:panelGroup>
+                  
+       <div class="actionButtons">
+        
+            <ice:commandButton id="save" value="Save" action="#{appstoreCategoryPlatformMapHome.persist}"
+                       		   disabled="#{!appstoreCategoryPlatformMapHome.wired}" rendered="#{!appstoreCategoryPlatformMapHome.managed}"/>  
+                          			  
+            <!--  <ice:commandButton id="update" value="Save" action="#{appstoreCategoryPlatformMapHome.update}" rendered="#{appstoreCategoryPlatformMapHome.managed}"/> -->
+
+            <ice:commandButton id="delete" value="Delete" action="#{appstoreCategoryPlatformMapHome.remove}" immediate="true" rendered="#{appstoreCategoryPlatformMapHome.managed}"/>
+
+            <s:button id="cancelEdit" styleClass="iceCmdBtn" value="Cancel" propagation="end" view="/AppstoreCategoryPlatformMap.xhtml"
+            		  rendered="#{appstoreCategoryPlatformMapHome.managed}"/>
+                
+            <s:button id="cancelAddappstoreCategoryPlatformMapHome" styleClass="iceCmdBtn" value="Cancel" propagation="end"
+            		  view="/#{empty appstoreCategoryPlatformMapFrom ? 'AppstoreCategoryPlatformMapList' : appstoreCategoryPlatformMapFrom}.xhtml"
+                	  rendered="#{!appstoreCategoryPlatformMapHome.managed}"/>
+        </div>
+    </ice:form>
+
+ <ice:form id="form2appstoreCategoryPlatformMapHome">
+
+  <ice:panelTabSet id="editPanelTabappstoreCategoryPlatformMapHomeId" styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
+
+ 	<ice:panelTab id="editTabappstoreCategoryId" label="Category Details">
+
+		<div class="association" id="appstoreCategoryParent">
+
+        	<h:outputText id="editappstoreCategoryTextId" value="No categories associated with this assignment." 
+                   		  rendered="#{appstoreCategoryPlatformMapHome.instance.appstoreCategory == null}"/>
+       	
+       	    <ice:dataTable var="appstoreCategory" value="#{appstoreCategoryPlatformMapHome.instance.appstoreCategory}" 
+                		   rendered="#{appstoreCategoryPlatformMapHome.instance.appstoreCategory != null}"
+                		   rowClasses="rvgRowOne,rvgRowTwo" columnClasses="allCols" id="editappstoreCategoryTableId">
+
+            <ice:column id="$editColumnnameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstoreCategory.name}
+            </ice:column>
+
+            <ice:column id="$editColumndescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstoreCategory.description}
+            </ice:column>
+
+            <ice:column id="editColumnappstoreCategoryLinkId">
+                <f:facet name="header">Action</f:facet>
+                <s:link view="/AppstoreCategory.xhtml" id="viewappstoreCategory" value="View" propagation="none">
+                    <f:param name="appstoreCategoryId" value="#{appstoreCategory.id}"/>
+                </s:link>
+            </ice:column>
+      </ice:dataTable>
+    </div>
+    </ice:panelTab>
+   
+ 	<ice:panelTab id="editTabappstorePlatformId" label="Platform Details" >
+
+		<div class="association" id="appstorePlatformParent">
+
+       	<h:outputText id="editappstorePlatformTextId" value="No platforms associated with this assignment." 
+                      rendered="#{appstoreCategoryPlatformMapHome.instance.appstorePlatform == null}"/>
+       	<ice:dataTable var="appstorePlatform" value="#{appstoreCategoryPlatformMapHome.instance.appstorePlatform}" 
+                	   rendered="#{appstoreCategoryPlatformMapHome.instance.appstorePlatform != null}"
+              		   rowClasses="rvgRowOne,rvgRowTwo" columnClasses="allCols" id="editappstorePlatformTableId">
+
+            <ice:column id="$editColumnnameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstorePlatform.name}
+            </ice:column>
+
+            <ice:column id="$editColumndescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstorePlatform.description}
+            </ice:column>
+
+            <ice:column id="editColumnappstorePlatformLinkId">
+                <f:facet name="header">Action</f:facet>
+                <s:link view="/AppstorePlatform.xhtml" id="viewappstorePlatform" value="View" propagation="none">
+                    <f:param name="appstorePlatformId" value="#{appstorePlatform.id}"/>
+                </s:link>
+            </ice:column>
+      </ice:dataTable>
+     </div>
+    </ice:panelTab>
+   </ice:panelTabSet>
+  </ice:form>
+ </ui:define>
+</ui:composition>

@@ -1,0 +1,156 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component" 
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <ice:form id="appstoreUserPlatformMap" styleClass="edit">
+     <ice:panelGroup  id="editappstoreUserPlatformMapGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    <ice:outputText id="editTextBoxId" value="#{appstoreUserPlatformMapHome.managed ? 'Edit' : 'Add'} User Platform Assignment"/>
+                  </td>
+              </tr>
+          </table>
+
+        <ice:panelGroup id="editPanelGroupId" styleClass="edit">		 
+
+            <s:decorate id="upmPlatformIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Platform</ui:define>
+                <ice:selectOneMenu id="upmPlatformId" value="#{appstoreUserPlatformMapHome.appstoreUserPlatformMapId.platformId}"
+                                   partialSubmit="true" valueChangeListener="#{appstoreUserPlatformMapHome.ValueChangeListener}" disabled="#{appstoreUserPlatformMapHome.managed}">
+                   <f:selectItems value="#{appstorePlatformList.platforms}"/>
+                </ice:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="upmUserIdField" template="layout/edit.xhtml">
+                <ui:define name="label">User</ui:define>
+                <ice:selectOneMenu id="upmUserId" value="#{appstoreUserPlatformMapHome.appstoreUserPlatformMapId.userId}" partialSubmit="true"
+                                   valueChangeListener="#{appstoreUserPlatformMapHome.ValueChangeListener}" disabled="#{appstoreUserPlatformMapHome.managed}">
+                    <f:selectItems value="#{appstoreUserList.users}"/>
+                </ice:selectOneMenu>
+             </s:decorate>
+          </ice:panelGroup>
+       </ice:panelGroup>
+
+       <div class="actionButtons">
+
+            <ice:commandButton id="save" value="Save" action="#{appstoreUserPlatformMapHome.persist}"
+                       		   disabled="#{!appstoreUserPlatformMapHome.wired}" rendered="#{!appstoreUserPlatformMapHome.managed}"/>  
+                          			  
+            <!-- <ice:commandButton id="update" value="Save" action="#{appstoreUserPlatformMapHome.update}" rendered="#{appstoreUserPlatformMapHome.managed}"/> -->
+                        			  
+            <ice:commandButton id="delete" value="Delete" action="#{appstoreUserPlatformMapHome.remove}" immediate="true"
+            				   rendered="#{appstoreUserPlatformMapHome.managed}"/>
+
+            <s:button id="cancelEdit" styleClass="iceCmdBtn" value="Cancel" propagation="end" view="/AppstoreUserPlatformMap.xhtml"
+                      rendered="#{appstoreUserPlatformMapHome.managed}"/>
+                
+            <s:button id="cancelAddappstoreUserPlatformMapHome" styleClass="iceCmdBtn" value="Cancel" propagation="end"
+                      view="/#{empty appstoreUserPlatformMapFrom ? 'AppstoreUserPlatformMapList' : appstoreUserPlatformMapFrom}.xhtml"
+                	  rendered="#{!appstoreUserPlatformMapHome.managed}"/>
+        </div>
+    </ice:form>
+
+ <ice:form id="form2appstoreUserPlatformMapHome">  
+
+  <ice:panelTabSet id="editPanelTabappstoreUserPlatformMapHomeId" styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
+   
+ 	<ice:panelTab id="editTabappstorePlatformId" label="Platform Details" >
+		<div class="association" id="appstorePlatformParent">
+
+        	<h:outputText id="editappstorePlatformTextId" value="No platform associated with this assignment." 
+                          rendered="#{appstoreUserPlatformMapHome.instance.appstorePlatform == null}"/>
+
+       	<ice:dataTable var="appstorePlatform" 
+                   	   value="#{appstoreUserPlatformMapHome.instance.appstorePlatform}" 
+                	   rendered="#{appstoreUserPlatformMapHome.instance.appstorePlatform != null}"
+              		   rowClasses="rvgRowOne,rvgRowTwo"
+		  			   columnClasses="allCols"
+                       id="editappstorePlatformTableId">
+
+            <ice:column id="$editColumnnameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstorePlatform.name}
+            </ice:column>
+
+            <ice:column id="$editColumndescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstorePlatform.description}
+            </ice:column>
+
+            <ice:column id="editColumnappstorePlatformLinkId">
+                <f:facet name="header">Action</f:facet>
+                <s:link view="/AppstorePlatform.xhtml" id="viewappstorePlatform" value="View" propagation="none">
+                    <f:param name="appstorePlatformId" value="#{appstorePlatform.id}"/>
+                </s:link>
+            </ice:column>
+      </ice:dataTable>
+    </div>
+    </ice:panelTab>
+
+ 	<ice:panelTab id="editTabappstoreUserId" label="User Details" >
+
+		<div class="association" id="appstoreUserParent">
+    
+        <h:outputText id="editappstoreUserTextId" value="No user associated with this assignment." 
+                      rendered="#{appstoreUserPlatformMapHome.instance.appstoreUser == null}"/>
+       	
+       	<ice:dataTable var="appstoreUser" 
+                   	   value="#{appstoreUserPlatformMapHome.instance.appstoreUser}" 
+                	   rendered="#{appstoreUserPlatformMapHome.instance.appstoreUser != null}"
+              		   rowClasses="rvgRowOne,rvgRowTwo"
+		  			   columnClasses="allCols"
+                       id="editappstoreUserTableId">
+
+            <ice:column id="$editColumnusernameId">
+                <f:facet name="header">Username</f:facet>
+                #{appstoreUser.username}
+            </ice:column>
+
+			<ice:column id="$editColumnpasswordId">
+                <f:facet name="header">Password</f:facet>
+                #{appstoreUser.password}
+            </ice:column>
+
+            <ice:column id="$editColumncreatedId">
+                <f:facet name="header">Created</f:facet>
+                #{appstoreUser.created}
+            </ice:column>
+
+            <ice:column id="$editColumnlastLoginId">
+                <f:facet name="header">Last Login</f:facet>
+                #{appstoreUser.lastLogin}
+            </ice:column>
+
+            <ice:column id="$editColumnapiKeyId">
+                <f:facet name="header">API Key</f:facet>
+                #{appstoreUser.apiKey}
+            </ice:column>
+
+            <ice:column id="$editColumnapiEnabledId">
+                <f:facet name="header">API Access</f:facet>
+                #{appstoreUser.apiEnabled ? 'Enabled' : 'Disabled'}
+            </ice:column>
+
+            <ice:column id="editColumnappstoreUserLinkId">
+                <f:facet name="header">Action</f:facet>
+                <s:link view="/AppstoreUser.xhtml" id="viewappstoreUser" value="View" propagation="none">
+                    <f:param name="appstoreUserId" value="#{appstoreUser.id}"/>
+                </s:link>
+            </ice:column>
+      </ice:dataTable>      
+     </div>
+    </ice:panelTab>
+   </ice:panelTabSet>
+  </ice:form>
+ </ui:define>
+</ui:composition>

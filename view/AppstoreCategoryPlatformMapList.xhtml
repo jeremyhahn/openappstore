@@ -1,0 +1,142 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ice="http://www.icesoft.com/icefaces/component"  
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <ice:form id="appstoreCategoryPlatformMapSearch" styleClass="edit">
+      <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+                    <ice:outputText id="listAppstoreCategoryPlatformMapId" value="Category to Platform assignment search filter"/>
+                 </td>
+              </tr>
+         </table>	
+         <ice:panelGroup id="listPanelGroupAppstoreCategoryPlatformMapId" styleClass="edit">
+		
+		    <s:decorate id="categoryIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Category</ui:define>
+                <ice:selectOneMenu id="cpmCategoryId" value="#{appstoreCategoryPlatformMapList.appstoreCategory.id}" partialSubmit="true"
+                				   valueChangeListener="#{appstoreCategoryPlatformMapList.ValueChangeListener}">
+                   <f:selectItems value="#{appstoreCategoryList.categories}"/>
+                </ice:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate id="platformIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Platform</ui:define>
+                <ice:selectOneMenu id="cpmPlatformId" value="#{appstoreCategoryPlatformMapList.appstorePlatform.id}" partialSubmit="true"
+                				   valueChangeListener="#{appstoreCategoryPlatformMapList.ValueChangeListener}">
+                    <f:selectItems value="#{appstorePlatformList.platforms}"/>
+                </ice:selectOneMenu>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <ice:selectOneRadio id="logic" style="width: 120px;" value="#{appstoreCategoryPlatformMapList.restrictionLogicOperator}"
+                					partialSubmit="true">
+                    <f:selectItem itemLabel="Both" itemValue="and"/>
+                    <f:selectItem itemLabel="Either" itemValue="or"/>
+                </ice:selectOneRadio>
+            </s:decorate>
+ 	     </ice:panelGroup>
+      </ice:panelGroup> 
+    </ice:form>
+
+    <ice:panelGroup styleClass="formBorderHighlight">
+
+    <h3>Category to Platform assignment search results</h3>
+
+    <div class="searchResults" id="listappstoreCategoryPlatformMapResults">
+    <ice:outputText value="The category to platform assignment search returned no results." 
+               		rendered="#{empty appstoreCategoryPlatformMapList.resultList}"/>
+
+    <ice:dataTable id="appstoreCategoryPlatformMapList" 
+                   var="appstoreCategoryPlatformMap"
+                   value="#{appstoreCategoryPlatformMapList.resultList}" 
+            	   resizable="true"
+				   columnClasses="allCols"
+             	   rendered="#{not empty appstoreCategoryPlatformMapList.resultList}">
+
+        <ice:column id="listcategoryIdId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreCategoryPlatformMapList}"/>
+                    <ui:param name="propertyLabel" value="Category"/>
+                    <ui:param name="propertyPath" value="appstoreCategoryPlatformMap.appstoreCategory.name"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreCategoryPlatformMap.appstoreCategory.name}
+        </ice:column>
+
+        <ice:column id="listplatformIdId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreCategoryPlatformMapList}"/>
+                    <ui:param name="propertyLabel" value="Platform id"/>
+                    <ui:param name="propertyPath" value="appstoreCategoryPlatformMap.appstorePlatform.name"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreCategoryPlatformMap.appstorePlatform.name}
+        </ice:column>
+
+        <ice:column id="listColumnAppstoreCategoryPlatformMapId">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'AppstoreCategoryPlatformMap' : from}.xhtml" value="#{empty from ? 'View' : 'Select'}" id="appstoreCategoryPlatformMap">
+                <f:param name="appstoreCategoryPlatformMapCategoryId" value="#{appstoreCategoryPlatformMap.id.categoryId}"/>
+                <f:param name="appstoreCategoryPlatformMapPlatformId" value="#{appstoreCategoryPlatformMap.id.platformId}"/>
+            </s:link>
+			#{' '}
+            <s:link view="/AppstoreCategoryPlatformMapEdit.xhtml" value="Edit" id="appstoreCategoryPlatformMapEdit" rendered="#{empty from}">
+                <f:param name="appstoreCategoryPlatformMapCategoryId" value="#{appstoreCategoryPlatformMap.id.categoryId}"/>
+                <f:param name="appstoreCategoryPlatformMapPlatformId" value="#{appstoreCategoryPlatformMap.id.platformId}"/>
+            </s:link>
+        </ice:column>
+    </ice:dataTable>
+    </div>
+</ice:panelGroup>
+
+    <div class="tableControl">
+
+        <s:link view="/AppstoreCategoryPlatformMapList.xhtml" rendered="#{appstoreCategoryPlatformMapList.previousExists}" 
+               value="#{messages.left}#{messages.left} First Page" id="firstPageappstoreCategoryPlatformMapListId">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+        
+        <s:link view="/AppstoreCategoryPlatformMapList.xhtml" 
+            rendered="#{appstoreCategoryPlatformMapList.previousExists}" 
+               value="#{messages.left} Previous Page"
+                  id="previousPageappstoreCategoryPlatformMapListId">
+            <f:param name="firstResult" value="#{appstoreCategoryPlatformMapList.previousFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/AppstoreCategoryPlatformMapList.xhtml" 
+            rendered="#{appstoreCategoryPlatformMapList.nextExists}" 
+               value="Next Page #{messages.right}"
+                  id="nextPageappstoreCategoryPlatformMapListId">
+            <f:param name="firstResult" value="#{appstoreCategoryPlatformMapList.nextFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/AppstoreCategoryPlatformMapList.xhtml" 
+            rendered="#{appstoreCategoryPlatformMapList.nextExists}" 
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPageappstoreCategoryPlatformMapListId">
+            <f:param name="firstResult" value="#{appstoreCategoryPlatformMapList.lastFirstResult}"/>
+        </s:link>
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/AppstoreCategoryPlatformMapEdit.xhtml" id="create" value="New Category to Application Assignment">
+            <f:param name="appstoreCategoryPlatformMapCategoryId"/>
+            <f:param name="appstoreCategoryPlatformMapPlatformId"/>
+        </s:button>
+    </s:div>
+ </ui:define>
+</ui:composition>

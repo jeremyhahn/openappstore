@@ -1,0 +1,138 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"   
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+      <ice:panelGroup  id="viewappstoreUserRoleMapHomePanelGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    <ice:outputText id="viewTextappstoreUserRoleMapHomeId" value="User to Role assignment"/>
+                  </td>
+              </tr>
+          </table>
+
+        <s:decorate id="roleId" template="layout/display.xhtml">
+            <ui:define name="label">Role</ui:define>
+            #{appstoreUserRoleMapHome.instance.appstoreUserRole.name}&#160;
+        </s:decorate>
+
+        <s:decorate id="userId" template="layout/display.xhtml">
+            <ui:define name="label">User</ui:define>
+            #{appstoreUserRoleMapHome.instance.appstoreUser.username}&#160;
+        </s:decorate>
+
+       <div style="clear:both"/>
+ 
+
+    <div id="viewAppstoreUserRoleMapEditsearchButtons" class="actionButtons">      
+
+        <s:button view="/AppstoreUserRoleMapEdit.xhtml" id="edit" styleClass="iceCmdBtn" value="Edit"/>
+        <s:button view="/#{empty appstoreUserRoleMapFrom ? 'AppstoreUserRoleMapList' : appstoreUserRoleMapFrom}.xhtml"
+                  id="done" styleClass="iceCmdBtn" value="Done"/>
+    </div>
+  </ice:panelGroup>
+
+    <ice:form id="view2appstoreUserRoleMapHomeFormId">
+      <ice:panelTabSet id="viewappstoreUserRoleMapHomeTabSetId" styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
+
+  	  <ice:panelTab id="viewappstoreUserpanelTab" label="User Details">
+   		<div class="association" id="appstoreUserParent">
+
+       		 <h:outputText value="No user associated with this role assignment." 
+		                   id="viewappstoreUserTextId" rendered="#{appstoreUserRoleMapHome.instance.appstoreUser == null}"/>
+
+        	<ice:dataTable  var="appstoreUser" 
+  		                    value="#{appstoreUserRoleMapHome.instance.appstoreUser}" 
+         			        rendered="#{appstoreUserRoleMapHome.instance.appstoreUser != null}"
+              				rowClasses="rvgRowOne,rvgRowTwo"
+	        				columnClasses="allCols"
+                      		id="viewappstoreUserTableId">
+
+            <ice:column id="viewusernameId">
+                <f:facet name="header">Username</f:facet>
+                #{appstoreUser.username}
+            </ice:column>
+
+            <ice:column id="viewpasswordId">
+                <f:facet name="header">Password</f:facet>
+                #{appstoreUser.password}
+            </ice:column>
+
+            <ice:column id="viewcreatedId">
+                <f:facet name="header">Created</f:facet>
+                #{appstoreUser.created}
+            </ice:column>
+
+            <ice:column id="viewlastLoginId">
+                <f:facet name="header">Last Login</f:facet>
+                #{appstoreUser.lastLogin}
+            </ice:column>
+
+            <ice:column id="viewapiKeyId">
+                <f:facet name="header">API Key</f:facet>
+                #{appstoreUser.apiKey}
+            </ice:column>
+
+            <ice:column id="viewapiEnabledId">
+                <f:facet name="header">API Access</f:facet>
+                #{appstoreUser.apiEnabled ? 'Enabled' : 'Disabled'}
+            </ice:column>
+
+            <ice:column id="viewappstoreUserColumnId">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewappstoreUserLinkId" value="View" view="/AppstoreUser.xhtml">
+                    <f:param name="appstoreUserId" value="#{appstoreUser.id}"/>
+                </s:link>
+            </ice:column>
+
+       </ice:dataTable>
+    </div>
+    </ice:panelTab>
+
+	<ice:panelTab id="viewappstoreUserRolepanelTab" label="Role Details">
+
+   		<div class="association" id="appstoreUserRoleParent">
+        
+       		 <h:outputText value="No role associated with this role assignment." id="viewappstoreUserRoleTextId"
+                           rendered="#{appstoreUserRoleMapHome.instance.appstoreUserRole == null}"/>
+
+        	<ice:dataTable  var="appstoreUserRole" 
+		                    value="#{appstoreUserRoleMapHome.instance.appstoreUserRole}" 
+         			        rendered="#{appstoreUserRoleMapHome.instance.appstoreUserRole != null}"
+              				rowClasses="rvgRowOne,rvgRowTwo"
+	        				columnClasses="allCols"
+                      		id="viewappstoreUserRoleTableId">
+
+            <ice:column id="viewnameId">
+                <f:facet name="header">Name</f:facet>
+                #{appstoreUserRole.name}
+            </ice:column>
+
+            <ice:column id="viewdescriptionId">
+                <f:facet name="header">Description</f:facet>
+                #{appstoreUserRole.description}
+            </ice:column>
+
+            <ice:column id="viewappstoreUserRoleColumnId">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewappstoreUserRoleLinkId" value="View" view="/AppstoreUserRole.xhtml">
+                    <f:param name="appstoreUserRoleId" value="#{appstoreUserRole.id}"/>
+                </s:link>
+            </ice:column>
+       </ice:dataTable>
+     </div>
+    </ice:panelTab>
+   </ice:panelTabSet>
+  </ice:form>
+ </ui:define>
+</ui:composition>

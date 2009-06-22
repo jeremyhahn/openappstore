@@ -1,0 +1,180 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <ice:form id="appstoreUserSearch" styleClass="edit">
+      <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+                    <ice:outputText id="listAppstoreUserId" value="User search filter"/>
+                 </td>
+              </tr>
+         </table>	
+         <ice:panelGroup id="listPanelGroupAppstoreUserId" styleClass="edit">
+
+            <s:decorate id="usernamedecId" template="layout/display.xhtml">
+                <ui:define name="label">Username</ui:define>
+                <ice:inputText id="username" value="#{appstoreUserList.appstoreUser.username}" patialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate id="passworddecId" template="layout/display.xhtml">
+                <ui:define name="label">Password</ui:define>
+                <ice:inputText id="password" value="#{appstoreUserList.appstoreUser.password}" partialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate id="apiKeydecId" template="layout/display.xhtml">
+                <ui:define name="label">API Key</ui:define>
+                <ice:inputText id="apiKey" value="#{appstoreUserList.appstoreUser.apiKey}" patialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate id="apiEnableddecId" template="layout/display.xhtml">
+                <ui:define name="label">API Access</ui:define>
+                <ice:inputText id="apiKey" value="#{appstoreUserList.appstoreUser.apiEnabled ? 'Enabled' : 'Disabled'}" patialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <ice:selectOneRadio id="logic" style="width: 120px;" value="#{appstoreUserList.restrictionLogicOperator}" partialSubmit="true">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </ice:selectOneRadio>
+            </s:decorate>
+	  	 </ice:panelGroup>
+      </ice:panelGroup>
+    </ice:form>
+    
+    <ice:panelGroup styleClass="formBorderHighlight">
+
+    <h3>User search results</h3>
+
+    <div class="searchResults" id="listappstoreUserResults">
+    <ice:outputText value="The user search returned no results." 
+                    rendered="#{empty appstoreUserList.resultList}"/>
+
+    <ice:dataTable id="appstoreUserList" 
+                   var="appstoreUser"
+                   value="#{appstoreUserList.resultList}" 
+    	           resizable="true"
+				   columnClasses="allCols"
+             	   rendered="#{not empty appstoreUserList.resultList}">
+
+        <ice:column id="listusernameId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserList}"/>
+                    <ui:param name="propertyLabel" value="Username"/>
+                    <ui:param name="propertyPath" value="appstoreUser.username"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreUser.username}&amp;nbsp;
+        </ice:column>
+
+        <ice:column id="listpasswordId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserList}"/>
+                    <ui:param name="propertyLabel" value="Password"/>
+                    <ui:param name="propertyPath" value="appstoreUser.password"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreUser.password}&amp;nbsp;
+        </ice:column>
+
+        <ice:column id="listcreatedId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserList}"/>
+                    <ui:param name="propertyLabel" value="Created"/>
+                    <ui:param name="propertyPath" value="appstoreUser.created"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreUser.created}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listlastLoginId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserList}"/>
+                    <ui:param name="propertyLabel" value="Last Login"/>
+                    <ui:param name="propertyPath" value="appstoreUser.lastLogin"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreUser.lastLogin}&amp;nbsp;
+        </ice:column>
+
+        <ice:column id="listapiKeyId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserList}"/>
+                    <ui:param name="propertyLabel" value="API Key"/>
+                    <ui:param name="propertyPath" value="appstoreUser.apiKey"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreUser.apiKey}&amp;nbsp;
+        </ice:column>
+                
+        <ice:column id="listapiEnabledId">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{appstoreUserList}"/>
+                    <ui:param name="propertyLabel" value="API Access"/>
+                    <ui:param name="propertyPath" value="appstoreUser.apiEnabled"/>
+                </ui:include>
+            </f:facet>
+            #{appstoreUser.apiEnabled ? 'Enabled' : 'Disabled'}&amp;nbsp;
+        </ice:column>
+
+        <ice:column id="listColumnAppstoreUserId">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'AppstoreUser' : from}.xhtml"  value="#{empty from ? 'View' : 'Select'}" id="appstoreUser">
+                 <f:param name="appstoreUserId" value="#{appstoreUser.id}"/>
+            </s:link>
+			#{' '}
+            <s:link view="/AppstoreUserEdit.xhtml" value="Edit" id="appstoreUserEdit" rendered="#{empty from}">
+                <f:param name="appstoreUserId" value="#{appstoreUser.id}"/>
+            </s:link>
+        </ice:column>
+    </ice:dataTable>
+    </div>
+ </ice:panelGroup>
+
+    <div class="tableControl">
+      
+        <s:link view="/AppstoreUserList.xhtml" rendered="#{appstoreUserList.previousExists}"
+        		value="#{messages.left}#{messages.left} First Page" id="firstPageappstoreUserListId">
+           <f:param name="firstResult" value="0"/>
+        </s:link>
+        
+        <s:link view="/AppstoreUserList.xhtml" rendered="#{appstoreUserList.previousExists}" 
+               value="#{messages.left} Previous Page" id="previousPageappstoreUserListId">
+            <f:param name="firstResult" value="#{appstoreUserList.previousFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/AppstoreUserList.xhtml" rendered="#{appstoreUserList.nextExists}"
+                value="Next Page #{messages.right}" id="nextPageappstoreUserListId">
+            <f:param name="firstResult" value="#{appstoreUserList.nextFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/AppstoreUserList.xhtml" rendered="#{appstoreUserList.nextExists}"
+                value="Last Page #{messages.right}#{messages.right}" id="lastPageappstoreUserListId">
+            <f:param name="firstResult" value="#{appstoreUserList.lastFirstResult}"/>
+        </s:link>
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/AppstoreUserEdit.xhtml" id="create" value="Create User">
+            <f:param name="appstoreUserId"/>
+        </s:button>
+    </s:div>
+ </ui:define>
+</ui:composition>

@@ -1,0 +1,114 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component" 
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <ice:form id="appstoreUserRole" styleClass="edit">
+     <ice:panelGroup  id="editappstoreUserRoleGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    <ice:outputText id="editTextBoxId" value="#{appstoreUserRoleHome.managed ? 'Edit' : 'Add'} Role"/>
+                  </td>
+              </tr>
+          </table>
+
+        <ice:panelGroup id="editPanelGroupId" styleClass="edit">		 
+
+            <s:decorate id="nameField" template="layout/edit.xhtml">
+                <ui:define name="label">Name</ui:define>
+                <ice:inputText id="name" required="true" value="#{appstoreUserRoleHome.instance.name}"/>
+            </s:decorate>
+
+            <s:decorate id="descriptionField" template="layout/edit.xhtml">
+                <ui:define name="label">Description</ui:define>
+                <ice:inputTextarea id="description" cols="18" rows="5" value="#{appstoreUserRoleHome.instance.description}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span> required fields
+            </div>
+          </ice:panelGroup>
+       </ice:panelGroup>
+                  
+       <div class="actionButtons">
+        
+            <ice:commandButton id="save" value="Save" 
+                         action="#{appstoreUserRoleHome.persist}"
+                       disabled="#{!appstoreUserRoleHome.wired}"
+                       rendered="#{!appstoreUserRoleHome.managed}"/>  
+                          			  
+            <ice:commandButton id="update" value="Save" 
+                               action="#{appstoreUserRoleHome.update}"
+                               rendered="#{appstoreUserRoleHome.managed}"/>
+                        			  
+            <ice:commandButton id="delete" value="Delete" action="#{appstoreUserRoleHome.remove}"
+                               immediate="true" rendered="#{appstoreUserRoleHome.managed}"/>
+
+            <s:button id="cancelEdit" styleClass="iceCmdBtn" value="Cancel"
+                      propagation="end"  view="/AppstoreUserRole.xhtml"
+                      rendered="#{appstoreUserRoleHome.managed}"/>
+
+            <s:button id="cancelAddappstoreUserRoleHome" styleClass="iceCmdBtn"
+                      value="Cancel" propagation="end" 
+                      view="/#{empty appstoreUserRoleFrom ? 'AppstoreUserRoleList' : appstoreUserRoleFrom}.xhtml"
+                      rendered="#{!appstoreUserRoleHome.managed}"/>
+        </div>
+    </ice:form>
+
+ <ice:form id="form2appstoreUserRoleHome">  
+
+  <ice:panelTabSet id="editPanelTabappstoreUserRoleHomeId" styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
+
+ 	<ice:panelTab id="editPanelTabappstoreUserRoleMapsId" label="Users">
+
+      <div class="association" id="appstoreUserRoleMapsChildren">
+        
+            <h:outputText value="No users associated with this role." 
+	                      id="editappstoreUserRoleMapsTextId" rendered="#{empty appstoreUserRoleHome.appstoreUserRoleMaps}"/>
+
+           <ice:dataTable value="#{appstoreUserRoleHome.appstoreUserRoleMaps}" var="appstoreUserRoleMap" 
+                          rendered="#{not empty appstoreUserRoleHome.appstoreUserRoleMaps}" rowClasses="rvgRowOne,rvgRowTwo"
+			              columnClasses="allCols" id="editappstoreUserRoleMapsTable">
+               <ice:column id="editroleIdId">
+                    <f:facet name="header">Role ID</f:facet>
+                    #{appstoreUserRoleMap.id.roleId}
+                </ice:column>
+               <ice:column id="edituserIdId">
+                    <f:facet name="header">User ID</f:facet>
+                    #{appstoreUserRoleMap.id.userId}
+                </ice:column>
+                <ice:column id="editappstoreUserRoleMapId">
+                    <f:facet name="header">Action</f:facet>
+                    <s:link view="/AppstoreUserRoleMap.xhtml" id="selectappstoreUserRoleMap" value="Select" propagation="none">
+                        <f:param name="appstoreUserRoleMapRoleId" value="#{appstoreUserRoleMap.id.roleId}"/>
+                        <f:param name="appstoreUserRoleMapUserId" value="#{appstoreUserRoleMap.id.userId}"/>
+                        <f:param name="appstoreUserRoleMapFrom" value="AppstoreUserRole"/>
+                    </s:link>
+                </ice:column>
+           </ice:dataTable>
+      </div>
+        <f:subview rendered="#{appstoreUserRoleHome.managed}" id="appstoreUserRoleMapsId">
+        <div class="actionButtons">
+            <s:button id="addappstoreUserRoleMapId" 
+                      value="Add User"
+                      view="/AppstoreUserRoleMapEdit.xhtml"
+                      propagation="none">
+                 <f:param name="appstoreUserRoleId" value="#{appstoreUserRoleHome.instance.id}"/>
+                 <f:param name="appstoreUserRoleMapFrom" value="AppstoreUserRole"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </ice:panelTab>
+   </ice:panelTabSet>
+  </ice:form>
+ </ui:define>
+</ui:composition>

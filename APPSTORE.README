@@ -1,0 +1,80 @@
+This is a seam-gen'd ICEfaces application designed to be an application database. Use a standard web browser or
+SOAP web service client to manage platforms, applications, types, categories, users and roles. The intention is to
+build a cross platform appstore which is robust, flexible and free, as well as be used to facilitate
+Platform as a Service (PaaS) offerings as well as a repository style download/install framework for application developers.
+
+This is an alpha build!
+
+All basic functionality seems to be working. There are two major outstanding issues which need to be addressed:
+
+a) Updates to mapping tables are not working. For example app to user or app to platform updates. Edit button is
+   currently not rendered until this matter can be resolved. Do a delete/save as a workaround in the meantime.
+   
+b) View issue with relationship table mapping entities. Could be possible icefaces bug with ice:selectOneMenu
+   partialsubmit or there could be an issue with something not being initalized. Do a search for TODO under the
+   view directory to see the commented code which demonstrates this issue. 
+
+The application currently uses 2 "hard coded" values to restrict access - developer and admin. Do a search
+for "hasRole" in the project source to change these to something custom. There are plans to extract these to a
+properties file.
+
+If using the SOAP web service, be sure that your client supports automatic session propagation. See the AppstoreAPI#login
+method for a way to get the session id if you need to create a manual way to propagate it.
+
+This appstore has been created specifically because I am creating an open source hosting platform (jHosting) which has a
+"Platform as a Service" feature as well as "plugin" ability to extend the functinality of the application. Using the SOAP
+web service, jHosting can download and install new plugins as well as application updates.
+
+
+TODO:
+-----
+The appstore needs shopping cart ability added to be really useful for commercial developers.
+
+
+BUILD NOTES:
+------------
+My development environment is set up using the following:
+
+Ubuntu Jaunty
+
+ICEsoft Technologies, Inc.
+ICEfaces 1.8.1 
+Build number: 7
+Revision: 18926
+
+JBoss Seam 2.1.2CR2,
+JDK 6
+JBoss 4.2.3
+MySQL 5.0
+
+The default datasource uses a mysql database named "appstore" with appstore/appstore007 as the credentials. Deploy the
+ear file located at dist/appstore.ear and the appstore-ds.xml file to the jboss deploy directory to get up and running quickly.
+I have done my best to include all necessary libs and automate the build as much as possible.
+
+I have not tested on anything outside of this environment.
+
+Default logins:
+
+Username	Password	Role
+admin		test		admin
+devuser		test		developer
+stduser		test		user
+
+
+Extras:
+-------
+Check the extra/ directory for the following:
+
+a) appstore-php-api: Demonstrates the ability to work with the appstore SOAP web service from PHP 5. Includes
+					 an example library I started working on, as well as a "hacking_around.php" page which you
+					 can use to invoke the service methods directly.
+
+Bugs:
+-----
+I am sure there are many bugs both visual and functional. Please feel free to send me your feedback and I will make sure
+I provide a fix ASAP.
+
+
+Contributions:
+--------------
+Anything helps! Get involved... Enjoy :)

@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="appstore">
+  <test verbose="2" name="com.makeabyte.appstore.client.session.AppStoreWSTest" annotations="JDK">
+    <classes>
+      <class name="com.makeabyte.appstore.client.session.AppStoreWSTest"/>
+    </classes>
+  </test>
+</suite>
