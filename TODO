@@ -1,0 +1,3 @@
+- Fix password encryption bug
+- Fix many-to-many relationship bug
+- E-commerce integration

@@ -31,7 +31,7 @@
    <web:hot-deploy-filter url-pattern="*.seam"/>
 
    <persistence:managed-persistence-context name="entityManager" auto-create="true"
- 		     entity-manager-factory="@seamEmfRef@"  persistence-unit-jndi-name="@puJndiName@"/>
+ 		     persistence-unit-jndi-name="java:/appstoreEntityManagerFactory"/>
 
    <!--  This is necessary for boostrapping jboss embedded with mysql database -->
    <persistence:entity-manager-factory name="entityManagerFactory" persistence-unit-name="appstore"

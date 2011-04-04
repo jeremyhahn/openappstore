@@ -1,9 +1,9 @@
-This is a seam-gen'd ICEfaces application designed to be an application database. Use a standard web browser or
-SOAP web service client to manage platforms, applications, types, categories, users and roles. The intention is to
-build a cross platform appstore which is robust, flexible and free, as well as be used to facilitate
-Platform as a Service (PaaS) offerings as well as a repository style download/install framework for application developers.
+This is a seam-gen'd ICEfaces application designed to be an application warehouse. Use a standard web browser or
+SOAP web service client to manage platforms, applications, types, categories, users and roles. This project is aimed at
+being a cross platform appstore which is robust, flexible and free. Use this application to power your own
+Platform as a Service (PaaS) offerings or repository style download/install framework for your application.
 
-This is an alpha build!
+-- This is an alpha build! --
 
 All basic functionality seems to be working. There are two major outstanding issues which need to be addressed:
 
@@ -22,30 +22,42 @@ If using the SOAP web service, be sure that your client supports automatic sessi
 method for a way to get the session id if you need to create a manual way to propagate it.
 
 This appstore has been created specifically because I am creating an open source hosting platform (jHosting) which has a
-"Platform as a Service" feature as well as "plugin" ability to extend the functinality of the application. Using the SOAP
+"Platform as a Service" feature as well as "plugin" ability to extend the functionality of the application. Using the SOAP
 web service, jHosting can download and install new plugins as well as application updates.
 
 
 TODO:
 -----
-The appstore needs shopping cart ability added to be really useful for commercial developers.
+Add shopping cart / ecommerce.
 
 
 BUILD NOTES:
 ------------
-My development environment is set up using the following:
+Has been tested on the following systems
 
-Ubuntu Jaunty
+Ubuntu Desktop 10.04 LTS
+Debian Lenny
+Debian Squeeze
 
 ICEsoft Technologies, Inc.
 ICEfaces 1.8.1 
 Build number: 7
 Revision: 18926
 
+ICEsoft Technologies, Inc.
+ICEfaces 1.8.2 
+Build number: 7
+Revision: 19321
+
 JBoss Seam 2.1.2CR2,
 JDK 6
 JBoss 4.2.3
 MySQL 5.0
+
+JBoss Seam 2.2.1 Final
+JDK 1.6
+JBoss 5.1.0.GA
+MySQL 5.1
 
 The default datasource uses a mysql database named "appstore" with appstore/appstore007 as the credentials. Deploy the
 ear file located at dist/appstore.ear and the appstore-ds.xml file to the jboss deploy directory to get up and running quickly.

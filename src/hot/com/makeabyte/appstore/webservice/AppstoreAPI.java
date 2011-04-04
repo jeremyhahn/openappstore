@@ -20,8 +20,10 @@ package com.makeabyte.appstore.webservice;
 
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.ParameterStyle;
 
 import org.jboss.seam.Component;
 import org.jboss.seam.annotations.Name;
@@ -30,7 +32,7 @@ import org.jboss.seam.annotations.Name;
 @Name("AppstoreAPI")
 @WebService(name = "AppstoreAPI", serviceName = "AppstoreAPI",
 		targetNamespace = "http://webservice.appstore.makeabyte.com")
-@SOAPBinding( style = SOAPBinding.Style.RPC )
+@SOAPBinding( style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = ParameterStyle.WRAPPED )
 public class AppstoreAPI implements AppstoreAPIRemote {
 
 	   public AppstoreAPI() {
@@ -45,7 +47,9 @@ public class AppstoreAPI implements AppstoreAPIRemote {
 	   }
 
 	   @WebMethod
-	   public boolean login( String username, String password, String apiKey )  {
+	   public boolean login(@WebParam(name = "username") String username,
+			   			    @WebParam(name = "password") String password,
+			   			    @WebParam(name = "apiKey") String apiKey )  {
 
 		      log( "login WebMethod Requested" );
 
@@ -72,7 +76,7 @@ public class AppstoreAPI implements AppstoreAPIRemote {
 	   }
 
 	   @WebMethod
-	   public void createUser( UserWS user ) {
+	   public void createUser(@WebParam(name = "user") UserWS user) {
 
 		   	  log( "createUser WebMethod executed" );
 
@@ -82,7 +86,7 @@ public class AppstoreAPI implements AppstoreAPIRemote {
 	   }
 
 	   @WebMethod
-	   public void deleteUser( Long userId ) {
+	   public void deleteUser(@WebParam(name = "userId") Long userId) {
 
 		      log( "deleteUser WebMethod executed" );
 
@@ -92,7 +96,7 @@ public class AppstoreAPI implements AppstoreAPIRemote {
 	   }
 
 	   @WebMethod
-	   public byte[] download( long id ) {
+	   public byte[] download(@WebParam(name = "id") long id) {
 
 		      log( "download WebMethod executed" );
 
@@ -101,7 +105,7 @@ public class AppstoreAPI implements AppstoreAPIRemote {
 	   }
 	   
 	   @WebMethod
-	   public AppWS[] getAppsByUserId( long id ) {
+	   public AppWS[] getAppsByUserId(@WebParam(name = "id") long id) {
 
 		      log( "getAppsByUserId WebMethod Executed" );
 
@@ -110,7 +114,7 @@ public class AppstoreAPI implements AppstoreAPIRemote {
 	   }
 
 	   @WebMethod
-	   public AppWS[] getAppsByPlatformId( long id ) {
+	   public AppWS[] getAppsByPlatformId(@WebParam(name = "id") long id) {
 
 		      log( "getAppsByPlatformId WebMethod Executed" );
 
@@ -119,7 +123,8 @@ public class AppstoreAPI implements AppstoreAPIRemote {
 	   }
 
 	   @WebMethod
-	   public void addAppToCategory( long appId, long categoryId ) {
+	   public void addAppToCategory(@WebParam(name = "appId") long appId,
+			   					    @WebParam(name = "categoryId") long categoryId ) {
 
 		   	  log( "addAppToCategory WebMethod Executed" );
 
@@ -128,7 +133,8 @@ public class AppstoreAPI implements AppstoreAPIRemote {
 	   }
 
 	   @WebMethod
-	   public void addAppToPlatform( long appId, long platformId ) {
+	   public void addAppToPlatform(@WebParam(name = "appId") long appId,
+			   						@WebParam(name = "platformId") long platformId ) {
 
 		   	  log( "addAppToPlatform WebMethod Executed" );
 

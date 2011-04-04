@@ -30,14 +30,14 @@ public class Mime {
     	                                     ".gzip", ".hlp", ".hqx", ".htc", ".htm",
     	                                     ".html", ".htmls", ".java", ".ksh", ".sh",
     	                                     ".sit", ".swf", ".tar", ".tgz", ".zip",
-    	                                     ".tar.gz", ".iso" };
+    	                                     ".tar.gz", ".iso", ".jhp" };
 
        private static String[] types = { "application/octet-stream", "application/x-bsh", "application/x-bzip", "application/x-bzip2", "text/plain",
     	                                 "text/plain", "application/x-java-class", "application/octet-stream", "application/x-gtar", "application/x-gzip",
     	                                 "application/x-gzip", "application/x-winhelp", "application/binhex", "application/hta", "text/html",
     	                                 "text/html", "text/html", "text/plain", "text/x-script.ksh", "text/x-script.sh",
     	                                 "application/x-stuffit", "application/x-shockwave-flash", "application/x-tar", "application/x-compressed", "application/zip",
-    	                                 "application/x-tar-gz", "application/octet-stream" };
+    	                                 "application/x-tar-gz", "application/octet-stream", "application/zip" };
 
 	   public static String getTypeByExtension( String extension ) {
 

@@ -1,0 +1,3 @@
+- Refactored SOAP web service bindings from RPC/Literal to Document Literal Wrapped
+- Updated libs for JBoss 5.1.0 / MySQL 5.1.
+- Added JHosting .jhp extension to supported mime types
